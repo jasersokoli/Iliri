@@ -1,0 +1,98 @@
+.sales-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.sales-list-header {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.sales-filter,
+.sales-search {
+  padding: 8px 12px;
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  font-size: 14px;
+}
+
+.sales-search {
+  flex: 1;
+  min-width: 200px;
+}
+
+.sales-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+}
+
+.sales-refresh {
+  padding: 8px 12px;
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  background: var(--bg-secondary);
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.sales-table-container {
+  overflow-x: auto;
+  max-height: 60vh;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+}
+
+.sales-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.sales-table th {
+  padding: 12px;
+  text-align: left;
+  font-weight: 600;
+  background-color: var(--bg-secondary);
+  border-bottom: 2px solid var(--border-color);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.sales-table td {
+  padding: 12px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.sales-table tbody tr {
+  cursor: pointer;
+}
+
+.sales-table tbody tr:hover {
+  background-color: var(--bg-tertiary);
+}
+
+.sales-table tbody tr.selected {
+  background-color: var(--primary-color);
+  color: white;
+}
+
+.sales-table tbody tr.unpaid {
+  background-color: #fee2e2;
+  color: var(--danger-color);
+}
+
+[data-theme='dark'] .sales-table tbody tr.unpaid {
+  background-color: #7f1d1d;
+}
+
+.sales-empty {
+  text-align: center;
+  padding: 40px;
+  color: var(--text-secondary);
+}
+

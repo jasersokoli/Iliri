@@ -1,0 +1,83 @@
+.add-supplier {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.add-supplier-toolbar {
+  display: flex;
+  gap: 8px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.add-supplier-toolbar button {
+  padding: 8px 16px;
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  background: var(--bg-tertiary);
+  color: var(--text-primary);
+  cursor: pointer;
+}
+
+.add-supplier-toolbar button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.add-supplier-toolbar button.danger {
+  background: var(--danger-color);
+  color: white;
+}
+
+.add-supplier-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.add-supplier-field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.add-supplier-field label {
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.add-supplier-field input[type="text"] {
+  padding: 10px;
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  font-size: 14px;
+}
+
+.add-supplier-field input.error {
+  border-color: var(--danger-color);
+}
+
+.error-text {
+  font-size: 12px;
+  color: var(--danger-color);
+}
+
+.code-container {
+  display: flex;
+  gap: 8px;
+}
+
+.code-container input {
+  flex: 1;
+}
+
+.code-container button {
+  padding: 10px 16px;
+  background: var(--primary-color);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+

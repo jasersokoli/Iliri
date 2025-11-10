@@ -1,0 +1,89 @@
+.purchases-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.purchases-list-header {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.purchases-filter,
+.purchases-search {
+  padding: 8px 12px;
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  font-size: 14px;
+}
+
+.purchases-search {
+  flex: 1;
+  min-width: 200px;
+}
+
+.purchases-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+}
+
+.purchases-refresh {
+  padding: 8px 12px;
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  background: var(--bg-secondary);
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.purchases-table-container {
+  overflow-x: auto;
+  max-height: 60vh;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+}
+
+.purchases-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.purchases-table th {
+  padding: 12px;
+  text-align: left;
+  font-weight: 600;
+  background-color: var(--bg-secondary);
+  border-bottom: 2px solid var(--border-color);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.purchases-table td {
+  padding: 12px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.purchases-table tbody tr {
+  cursor: pointer;
+}
+
+.purchases-table tbody tr:hover {
+  background-color: var(--bg-tertiary);
+}
+
+.purchases-table tbody tr.selected {
+  background-color: var(--primary-color);
+  color: white;
+}
+
+.purchases-empty {
+  text-align: center;
+  padding: 40px;
+  color: var(--text-secondary);
+}
+

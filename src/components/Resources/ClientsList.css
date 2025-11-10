@@ -1,0 +1,117 @@
+.clients-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.clients-list-header {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.clients-dropdown,
+.clients-search {
+  padding: 8px 12px;
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  font-size: 14px;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+}
+
+.clients-search {
+  flex: 1;
+  min-width: 200px;
+}
+
+.clients-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  color: var(--text-primary);
+  cursor: pointer;
+}
+
+.clients-filter-btn {
+  padding: 8px 16px;
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+  cursor: pointer;
+}
+
+.clients-filter-btn.active {
+  background: var(--primary-color);
+  color: white;
+}
+
+.clients-add-btn {
+  padding: 8px 16px;
+  background-color: var(--primary-color);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.clients-table-container {
+  overflow-x: auto;
+  max-height: 60vh;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+}
+
+.clients-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.clients-table th {
+  padding: 12px;
+  text-align: left;
+  font-weight: 600;
+  background-color: var(--bg-secondary);
+  border-bottom: 2px solid var(--border-color);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.clients-table td {
+  padding: 12px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.clients-table tbody tr {
+  cursor: pointer;
+}
+
+.clients-table tbody tr:hover {
+  background-color: var(--bg-tertiary);
+}
+
+.clients-table tbody tr.selected {
+  background-color: var(--primary-color);
+  color: white;
+}
+
+.clients-table tbody tr.unpaid {
+  background-color: #fee2e2;
+  color: var(--danger-color);
+}
+
+[data-theme='dark'] .clients-table tbody tr.unpaid {
+  background-color: #7f1d1d;
+}
+
+.clients-empty {
+  text-align: center;
+  padding: 40px;
+  color: var(--text-secondary);
+}
+

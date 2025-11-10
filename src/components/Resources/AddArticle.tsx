@@ -1,0 +1,408 @@
+import { useState, useEffect } from 'react';
+import { useDataStore } from '../../store/dataStore';
+import { generateUniqueCode } from '../../utils/helpers';
+import type { Article } from '../../types';
+import Modal from '../Modal';
+import './AddArticle.css';
+
+interface AddArticleProps {
+  articleId: string | null;
+  onClose: () => void;
+  onBack: () => void;
+}
+
+type Mode = 'view' | 'edit';
+
+export default function AddArticle({ articleId, onClose, onBack }: AddArticleProps) {
+  const { articles, suppliers, addArticle, updateArticle, deleteArticle, addNotification, refreshAnalytics } = useDataStore();
+  const [mode, setMode] = useState<Mode>('edit');
+  const [errors, setErrors] = useState<Record<string, string>>({});
+  const [isDirty, setIsDirty] = useState(false);
+
+  const existingArticle = articleId ? articles.find((a) => a.id === articleId) : null;
+
+  const [formData, setFormData] = useState<Partial<Article>>({
+    name: '',
+    code1: '',
+    code2: '',
+    cost: 0,
+    currentStock: 0,
+    minimumStock: undefined,
+    price1: 0,
+    price2: undefined,
+    price3: undefined,
+    supplierId: '',
+    unit: 'pcs',
+    active: true,
+  });
+
+  useEffect(() => {
+    if (existingArticle) {
+      setFormData(existingArticle);
+      setMode('view');
+    } else {
+      setMode('edit');
+    }
+  }, [articleId, existingArticle]);
+
+  const handleChange = (field: keyof Article, value: any) => {
+    setFormData((prev) => ({ ...prev, [field]: value }));
+    setIsDirty(true);
+    if (errors[field]) {
+      setErrors((prev) => ({ ...prev, [field]: '' }));
+    }
+  };
+
+  const handleGenerateCode = (field: 'code1' | 'code2') => {
+    if (mode !== 'edit') return;
+    const existingCodes = articles.map((a) => a.code1).filter(Boolean);
+    const newCode = generateUniqueCode(existingCodes);
+    handleChange(field, newCode);
+  };
+
+  const validate = (): boolean => {
+    const newErrors: Record<string, string> = {};
+
+    if (!formData.name || formData.name.trim().length === 0) {
+      newErrors.name = 'Name is required';
+    }
+
+    if (!formData.code1 || formData.code1.trim().length === 0) {
+      newErrors.code1 = 'Code 1 is required';
+    } else {
+      // Check uniqueness
+      const existing = articles.find((a) => a.code1 === formData.code1 && a.id !== articleId);
+      if (existing) {
+        newErrors.code1 = 'Code 1 must be unique';
+      }
+    }
+
+    if (formData.cost < 0) {
+      newErrors.cost = 'Cost must be non-negative';
+    }
+
+    if (formData.currentStock < 0) {
+      newErrors.currentStock = 'Current stock must be non-negative';
+    }
+
+    if (formData.price1 < 0) {
+      newErrors.price1 = 'Price 1 must be non-negative';
+    }
+
+    if (formData.minimumStock !== undefined && formData.minimumStock < 0) {
+      newErrors.minimumStock = 'Minimum stock must be non-negative';
+    }
+
+    if (formData.minimumStock !== undefined && formData.minimumStock > formData.currentStock!) {
+      newErrors.minimumStock = 'Minimum stock cannot exceed current stock';
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const handleSave = () => {
+    if (!validate()) return;
+
+    const articleData: Article = {
+      id: existingArticle?.id || `article-${Date.now()}`,
+      name: formData.name!,
+      code1: formData.code1!,
+      code2: formData.code2,
+      cost: formData.cost || 0,
+      currentStock: formData.currentStock || 0,
+      minimumStock: formData.minimumStock,
+      price1: formData.price1 || 0,
+      price2: formData.price2,
+      price3: formData.price3,
+      supplierId: formData.supplierId,
+      unit: formData.unit || 'pcs',
+      active: formData.active ?? true,
+      deleted: false,
+    };
+
+    if (existingArticle) {
+      updateArticle(existingArticle.id, articleData);
+    } else {
+      addArticle(articleData);
+    }
+
+    // Check for low stock notification
+    if (articleData.minimumStock !== undefined && articleData.currentStock <= articleData.minimumStock) {
+      addNotification({
+        id: `notif-${Date.now()}`,
+        type: 'Low Stock',
+        description: `Article ${articleData.name} has reached minimum stock level`,
+        read: false,
+        createdAt: new Date(),
+      });
+    }
+
+    refreshAnalytics();
+    setIsDirty(false);
+    setMode('view');
+  };
+
+  const handleCancel = () => {
+    if (existingArticle) {
+      setFormData(existingArticle);
+    } else {
+      setFormData({
+        name: '',
+        code1: '',
+        code2: '',
+        cost: 0,
+        currentStock: 0,
+        minimumStock: undefined,
+        price1: 0,
+        price2: undefined,
+        price3: undefined,
+        supplierId: '',
+        unit: 'pcs',
+        active: true,
+      });
+    }
+    setErrors({});
+    setIsDirty(false);
+    setMode('view');
+  };
+
+  const handleDelete = () => {
+    if (!existingArticle) return;
+    if (window.confirm('Are you sure you want to delete this article?')) {
+      deleteArticle(existingArticle.id);
+      refreshAnalytics();
+      onClose();
+    }
+  };
+
+  const handleClose = () => {
+    if (isDirty && mode === 'edit') {
+      if (window.confirm('You have unsaved changes. Are you sure you want to close?')) {
+        onClose();
+      }
+    } else {
+      onClose();
+    }
+  };
+
+  const units = ['pcs', 'kg', 'g', 'L', 'mL', 'm', 'cm', 'box', 'pack'];
+
+  return (
+    <Modal isOpen={true} onClose={handleClose} size="large" title={existingArticle ? 'Article Details' : 'Add New Article'}>
+      <div className="add-article">
+        <div className="add-article-toolbar">
+          <button
+            className="add-article-btn"
+            onClick={() => {
+              setMode('edit');
+              setIsDirty(true);
+            }}
+            disabled={mode === 'edit'}
+          >
+            {existingArticle ? 'Modify' : 'Add New'}
+          </button>
+          <button
+            className="add-article-btn"
+            onClick={handleSave}
+            disabled={mode === 'view'}
+          >
+            Save
+          </button>
+          <button
+            className="add-article-btn"
+            onClick={handleCancel}
+            disabled={mode === 'view'}
+          >
+            Cancel
+          </button>
+          <button
+            className="add-article-btn add-article-btn-danger"
+            onClick={handleDelete}
+            disabled={!existingArticle || mode === 'edit'}
+          >
+            Delete
+          </button>
+        </div>
+
+        <div className="add-article-form">
+          <div className="add-article-field">
+            <label className="add-article-label">Name of Article *</label>
+            <input
+              type="text"
+              value={formData.name || ''}
+              onChange={(e) => handleChange('name', e.target.value)}
+              disabled={mode === 'view'}
+              className={`add-article-input ${errors.name ? 'error' : ''}`}
+            />
+            {errors.name && <span className="add-article-error">{errors.name}</span>}
+          </div>
+
+          <div className="add-article-row">
+            <div className="add-article-field">
+              <label className="add-article-label">Code 1 *</label>
+              <div className="add-article-code-container">
+                <input
+                  type="text"
+                  value={formData.code1 || ''}
+                  onChange={(e) => handleChange('code1', e.target.value)}
+                  disabled={mode === 'view'}
+                  className={`add-article-input ${errors.code1 ? 'error' : ''}`}
+                />
+                {mode === 'edit' && (
+                  <button
+                    className="add-article-generate"
+                    onClick={() => handleGenerateCode('code1')}
+                    type="button"
+                  >
+                    Generate
+                  </button>
+                )}
+              </div>
+              {errors.code1 && <span className="add-article-error">{errors.code1}</span>}
+            </div>
+
+            <div className="add-article-field">
+              <label className="add-article-label">Code 2</label>
+              <div className="add-article-code-container">
+                <input
+                  type="text"
+                  value={formData.code2 || ''}
+                  onChange={(e) => handleChange('code2', e.target.value)}
+                  disabled={mode === 'view'}
+                  className="add-article-input"
+                />
+                {mode === 'edit' && (
+                  <button
+                    className="add-article-generate"
+                    onClick={() => handleGenerateCode('code2')}
+                    type="button"
+                  >
+                    Generate
+                  </button>
+                )}
+              </div>
+            </div>
+          </div>
+
+          <div className="add-article-row">
+            <div className="add-article-field">
+              <label className="add-article-label">Cost *</label>
+              <input
+                type="number"
+                step="0.01"
+                value={formData.cost || 0}
+                onChange={(e) => handleChange('cost', parseFloat(e.target.value) || 0)}
+                disabled={mode === 'view'}
+                className={`add-article-input ${errors.cost ? 'error' : ''}`}
+              />
+              {errors.cost && <span className="add-article-error">{errors.cost}</span>}
+            </div>
+
+            <div className="add-article-field">
+              <label className="add-article-label">Current Stock *</label>
+              <input
+                type="number"
+                step="0.01"
+                value={formData.currentStock || 0}
+                onChange={(e) => handleChange('currentStock', parseFloat(e.target.value) || 0)}
+                disabled={mode === 'view'}
+                className={`add-article-input ${errors.currentStock ? 'error' : ''}`}
+              />
+              {errors.currentStock && <span className="add-article-error">{errors.currentStock}</span>}
+            </div>
+
+            <div className="add-article-field">
+              <label className="add-article-label">Minimum Stock</label>
+              <input
+                type="number"
+                step="0.01"
+                value={formData.minimumStock ?? ''}
+                onChange={(e) => handleChange('minimumStock', e.target.value ? parseFloat(e.target.value) : undefined)}
+                disabled={mode === 'view'}
+                className={`add-article-input ${errors.minimumStock ? 'error' : ''}`}
+                placeholder="Optional"
+              />
+              {errors.minimumStock && <span className="add-article-error">{errors.minimumStock}</span>}
+            </div>
+          </div>
+
+          <div className="add-article-row">
+            <div className="add-article-field">
+              <label className="add-article-label">Price 1 *</label>
+              <input
+                type="number"
+                step="0.01"
+                value={formData.price1 || 0}
+                onChange={(e) => handleChange('price1', parseFloat(e.target.value) || 0)}
+                disabled={mode === 'view'}
+                className={`add-article-input ${errors.price1 ? 'error' : ''}`}
+              />
+              {errors.price1 && <span className="add-article-error">{errors.price1}</span>}
+            </div>
+
+            <div className="add-article-field">
+              <label className="add-article-label">Price 2</label>
+              <input
+                type="number"
+                step="0.01"
+                value={formData.price2 ?? ''}
+                onChange={(e) => handleChange('price2', e.target.value ? parseFloat(e.target.value) : undefined)}
+                disabled={mode === 'view'}
+                className="add-article-input"
+              />
+            </div>
+
+            <div className="add-article-field">
+              <label className="add-article-label">Price 3</label>
+              <input
+                type="number"
+                step="0.01"
+                value={formData.price3 ?? ''}
+                onChange={(e) => handleChange('price3', e.target.value ? parseFloat(e.target.value) : undefined)}
+                disabled={mode === 'view'}
+                className="add-article-input"
+              />
+            </div>
+          </div>
+
+          <div className="add-article-row">
+            <div className="add-article-field">
+              <label className="add-article-label">Supplier</label>
+              <select
+                value={formData.supplierId || ''}
+                onChange={(e) => handleChange('supplierId', e.target.value || undefined)}
+                disabled={mode === 'view'}
+                className="add-article-input"
+              >
+                <option value="">Select supplier</option>
+                {suppliers.filter((s) => s.active).map((supplier) => (
+                  <option key={supplier.id} value={supplier.id}>
+                    {supplier.name}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            <div className="add-article-field">
+              <label className="add-article-label">Unit</label>
+              <select
+                value={formData.unit || 'pcs'}
+                onChange={(e) => handleChange('unit', e.target.value)}
+                disabled={mode === 'view'}
+                className="add-article-input"
+              >
+                {units.map((unit) => (
+                  <option key={unit} value={unit}>
+                    {unit}
+                  </option>
+                ))}
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+    </Modal>
+  );
+}
+
