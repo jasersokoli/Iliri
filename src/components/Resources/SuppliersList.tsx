@@ -35,8 +35,8 @@ export default function SuppliersList({ onClose, onSelectSupplier }: SuppliersLi
       filtered = filtered.filter(
         (s) =>
           s.name.toLowerCase().includes(searchLower) ||
-          s.code.toLowerCase().includes(searchLower) ||
-          (s.telephone && s.telephone.includes(search))
+          (s.code && s.code.toLowerCase().includes(searchLower)) ||
+          (s.telephone && s.telephone.toLowerCase().includes(searchLower))
       );
     }
 

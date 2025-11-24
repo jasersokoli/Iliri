@@ -126,15 +126,13 @@ export default function SalesList({ onClose }: SalesListProps) {
                       <td>${sale.unitPrice.toFixed(2)}</td>
                       <td>${sale.total.toFixed(2)}</td>
                       <td>
-                        <input
-                          type="checkbox"
-                          checked={sale.paid}
-                          onChange={(e) => {
-                            e.stopPropagation();
-                            handleTogglePaid(sale.id, e.target.checked);
-                          }}
-                          onClick={(e) => e.stopPropagation()}
-                        />
+                        {sale.paid ? (
+                          <span>✓ Paid</span>
+                        ) : (
+                          <span>
+                            {sale.paidAmount ? `$${sale.paidAmount.toFixed(2)} / $${sale.total.toFixed(2)}` : 'Unpaid'}
+                          </span>
+                        )}
                       </td>
                     </tr>
                   ))

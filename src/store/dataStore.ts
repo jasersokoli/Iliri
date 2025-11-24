@@ -161,12 +161,18 @@ export const useDataStore = create<DataState>((set, get) => ({
     const state = get();
     // Calculate analytics from current data
     const totalSales = state.sales.filter((s) => s.paid).length;
-    const totalRevenue = state.sales
-      .filter((s) => s.paid)
-      .reduce((sum, s) => sum + s.total, 0);
-    const totalDebt = state.sales
-      .filter((s) => !s.paid)
-      .reduce((sum, s) => sum + s.total, 0);
+    const totalRevenue = state.sales.reduce((sum, s) => {
+      if (s.paid) {
+        return sum + s.total;
+      }
+      return sum + (s.paidAmount || 0);
+    }, 0);
+    const totalDebt = state.sales.reduce((sum, s) => {
+      if (s.paid) {
+        return sum;
+      }
+      return sum + (s.total - (s.paidAmount || 0));
+    }, 0);
 
     // Calculate profit (revenue - cost of goods sold)
     const costOfGoodsSold = state.sales

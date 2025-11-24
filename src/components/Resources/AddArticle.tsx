@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import { useDataStore } from '../../store/dataStore';
-import { generateUniqueCode } from '../../utils/helpers';
 import type { Article } from '../../types';
 import Modal from '../Modal';
 import './AddArticle.css';
@@ -24,7 +23,6 @@ export default function AddArticle({ articleId, onClose, onBack }: AddArticlePro
   const [formData, setFormData] = useState<Partial<Article>>({
     name: '',
     code1: '',
-    code2: '',
     cost: 0,
     currentStock: 0,
     minimumStock: undefined,
@@ -53,28 +51,12 @@ export default function AddArticle({ articleId, onClose, onBack }: AddArticlePro
     }
   };
 
-  const handleGenerateCode = (field: 'code1' | 'code2') => {
-    if (mode !== 'edit') return;
-    const existingCodes = articles.map((a) => a.code1).filter(Boolean);
-    const newCode = generateUniqueCode(existingCodes);
-    handleChange(field, newCode);
-  };
 
   const validate = (): boolean => {
     const newErrors: Record<string, string> = {};
 
     if (!formData.name || formData.name.trim().length === 0) {
       newErrors.name = 'Name is required';
-    }
-
-    if (!formData.code1 || formData.code1.trim().length === 0) {
-      newErrors.code1 = 'Code 1 is required';
-    } else {
-      // Check uniqueness
-      const existing = articles.find((a) => a.code1 === formData.code1 && a.id !== articleId);
-      if (existing) {
-        newErrors.code1 = 'Code 1 must be unique';
-      }
     }
 
     if (formData.cost < 0) {
@@ -107,8 +89,7 @@ export default function AddArticle({ articleId, onClose, onBack }: AddArticlePro
     const articleData: Article = {
       id: existingArticle?.id || `article-${Date.now()}`,
       name: formData.name!,
-      code1: formData.code1!,
-      code2: formData.code2,
+      code1: formData.code1 || `ART-${Date.now()}`,
       cost: formData.cost || 0,
       currentStock: formData.currentStock || 0,
       minimumStock: formData.minimumStock,
@@ -150,7 +131,6 @@ export default function AddArticle({ articleId, onClose, onBack }: AddArticlePro
       setFormData({
         name: '',
         code1: '',
-        code2: '',
         cost: 0,
         currentStock: 0,
         minimumStock: undefined,
@@ -240,59 +220,12 @@ export default function AddArticle({ articleId, onClose, onBack }: AddArticlePro
 
           <div className="add-article-row">
             <div className="add-article-field">
-              <label className="add-article-label">Code 1 *</label>
-              <div className="add-article-code-container">
-                <input
-                  type="text"
-                  value={formData.code1 || ''}
-                  onChange={(e) => handleChange('code1', e.target.value)}
-                  disabled={mode === 'view'}
-                  className={`add-article-input ${errors.code1 ? 'error' : ''}`}
-                />
-                {mode === 'edit' && (
-                  <button
-                    className="add-article-generate"
-                    onClick={() => handleGenerateCode('code1')}
-                    type="button"
-                  >
-                    Generate
-                  </button>
-                )}
-              </div>
-              {errors.code1 && <span className="add-article-error">{errors.code1}</span>}
-            </div>
-
-            <div className="add-article-field">
-              <label className="add-article-label">Code 2</label>
-              <div className="add-article-code-container">
-                <input
-                  type="text"
-                  value={formData.code2 || ''}
-                  onChange={(e) => handleChange('code2', e.target.value)}
-                  disabled={mode === 'view'}
-                  className="add-article-input"
-                />
-                {mode === 'edit' && (
-                  <button
-                    className="add-article-generate"
-                    onClick={() => handleGenerateCode('code2')}
-                    type="button"
-                  >
-                    Generate
-                  </button>
-                )}
-              </div>
-            </div>
-          </div>
-
-          <div className="add-article-row">
-            <div className="add-article-field">
               <label className="add-article-label">Cost *</label>
               <input
                 type="number"
                 step="0.01"
-                value={formData.cost || 0}
-                onChange={(e) => handleChange('cost', parseFloat(e.target.value) || 0)}
+                value={formData.cost || ''}
+                onChange={(e) => handleChange('cost', e.target.value === '' ? 0 : parseFloat(e.target.value) || 0)}
                 disabled={mode === 'view'}
                 className={`add-article-input ${errors.cost ? 'error' : ''}`}
               />
@@ -304,8 +237,8 @@ export default function AddArticle({ articleId, onClose, onBack }: AddArticlePro
               <input
                 type="number"
                 step="0.01"
-                value={formData.currentStock || 0}
-                onChange={(e) => handleChange('currentStock', parseFloat(e.target.value) || 0)}
+                value={formData.currentStock || ''}
+                onChange={(e) => handleChange('currentStock', e.target.value === '' ? 0 : parseFloat(e.target.value) || 0)}
                 disabled={mode === 'view'}
                 className={`add-article-input ${errors.currentStock ? 'error' : ''}`}
               />
@@ -333,8 +266,8 @@ export default function AddArticle({ articleId, onClose, onBack }: AddArticlePro
               <input
                 type="number"
                 step="0.01"
-                value={formData.price1 || 0}
-                onChange={(e) => handleChange('price1', parseFloat(e.target.value) || 0)}
+                value={formData.price1 || ''}
+                onChange={(e) => handleChange('price1', e.target.value === '' ? 0 : parseFloat(e.target.value) || 0)}
                 disabled={mode === 'view'}
                 className={`add-article-input ${errors.price1 ? 'error' : ''}`}
               />

@@ -8,18 +8,12 @@ type SalesView = 'menu' | 'list' | 'add';
 export default function Sales() {
   const [currentView, setCurrentView] = useState<SalesView>('menu');
 
-  const handlePrint = () => {
-    window.print();
-  };
 
   if (currentView === 'menu') {
     return (
       <div className="sales">
         <div className="sales-header">
           <h1 className="sales-title">Sales</h1>
-          <button className="sales-print-btn" onClick={handlePrint}>
-            🖨️ Print
-          </button>
         </div>
         <div className="sales-grid">
           <div
@@ -69,9 +63,6 @@ export default function Sales() {
           ← Back
         </button>
         <h1 className="sales-title">Sales</h1>
-        <button className="sales-print-btn" onClick={handlePrint}>
-          🖨️ Print
-        </button>
       </div>
 
       {currentView === 'list' && (

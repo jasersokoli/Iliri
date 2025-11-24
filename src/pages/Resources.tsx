@@ -16,18 +16,12 @@ export default function Resources() {
   const [selectedSupplierId, setSelectedSupplierId] = useState<string | null>(null);
   const [selectedClientId, setSelectedClientId] = useState<string | null>(null);
 
-  const handlePrint = () => {
-    window.print();
-  };
 
   if (currentView === 'menu') {
     return (
       <div className="resources">
         <div className="resources-header">
           <h1 className="resources-title">Resources</h1>
-          <button className="resources-print-btn" onClick={handlePrint}>
-            🖨️ Print
-          </button>
         </div>
         <div className="resources-grid">
           <div
@@ -141,9 +135,6 @@ export default function Resources() {
           ← Back
         </button>
         <h1 className="resources-title">Resources</h1>
-        <button className="resources-print-btn" onClick={handlePrint}>
-          🖨️ Print
-        </button>
       </div>
 
       {currentView === 'articles-list' && (

@@ -45,8 +45,8 @@ export default function ClientsList({ onClose, onSelectClient }: ClientsListProp
       filtered = filtered.filter(
         (c) =>
           c.name.toLowerCase().includes(searchLower) ||
-          c.code.toLowerCase().includes(searchLower) ||
-          (c.telephone && c.telephone.includes(search))
+          (c.code && c.code.toLowerCase().includes(searchLower)) ||
+          (c.telephone && c.telephone.toLowerCase().includes(searchLower))
       );
     }
 

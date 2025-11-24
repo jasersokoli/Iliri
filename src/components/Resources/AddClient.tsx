@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import { useDataStore } from '../../store/dataStore';
-import { generateUniqueCode } from '../../utils/helpers';
 import type { Client } from '../../types';
 import Modal from '../Modal';
 import './AddClient.css';
@@ -22,10 +21,7 @@ export default function AddClient({ clientId, onClose, onBack }: AddClientProps)
 
   const [formData, setFormData] = useState<Partial<Client>>({
     name: '',
-    code: '',
     telephone: '',
-    email: '',
-    address: '',
     active: true,
   });
 
@@ -45,35 +41,12 @@ export default function AddClient({ clientId, onClose, onBack }: AddClientProps)
     }
   };
 
-  const handleGenerateCode = () => {
-    if (mode !== 'edit') return;
-    if (!formData.code) {
-      const existingCodes = clients.map((c) => c.code).filter(Boolean);
-      const newCode = generateUniqueCode(existingCodes);
-      handleChange('code', newCode);
-    }
-  };
-
-  useEffect(() => {
-    if (mode === 'edit' && !existingClient && !formData.code) {
-      handleGenerateCode();
-    }
-  }, [mode, existingClient]);
 
   const validate = (): boolean => {
     const newErrors: Record<string, string> = {};
 
     if (!formData.name || formData.name.trim().length === 0) {
       newErrors.name = 'Name is required';
-    }
-
-    if (!formData.code || formData.code.trim().length === 0) {
-      newErrors.code = 'Code is required';
-    } else {
-      const existing = clients.find((c) => c.code === formData.code && c.id !== clientId);
-      if (existing) {
-        newErrors.code = 'Code must be unique';
-      }
     }
 
     if (formData.telephone && !/^[\d\s+\-]+$/.test(formData.telephone)) {
@@ -90,10 +63,8 @@ export default function AddClient({ clientId, onClose, onBack }: AddClientProps)
     const clientData: Client = {
       id: existingClient?.id || `client-${Date.now()}`,
       name: formData.name!,
-      code: formData.code!,
+      code: `CLI-${Date.now()}`,
       telephone: formData.telephone,
-      email: formData.email,
-      address: formData.address,
       active: formData.active ?? true,
     };
 
@@ -111,7 +82,7 @@ export default function AddClient({ clientId, onClose, onBack }: AddClientProps)
     if (existingClient) {
       setFormData(existingClient);
     } else {
-      setFormData({ name: '', code: '', telephone: '', email: '', address: '', active: true });
+      setFormData({ name: '', telephone: '', active: true });
     }
     setErrors({});
     setMode('view');
@@ -157,25 +128,6 @@ export default function AddClient({ clientId, onClose, onBack }: AddClientProps)
           </div>
 
           <div className="add-client-field">
-            <label>Code *</label>
-            <div className="code-container">
-              <input
-                type="text"
-                value={formData.code || ''}
-                onChange={(e) => handleChange('code', e.target.value)}
-                disabled={mode === 'view'}
-                className={errors.code ? 'error' : ''}
-              />
-              {mode === 'edit' && (
-                <button type="button" onClick={handleGenerateCode}>
-                  Generate
-                </button>
-              )}
-            </div>
-            {errors.code && <span className="error-text">{errors.code}</span>}
-          </div>
-
-          <div className="add-client-field">
             <label>Telephone</label>
             <input
               type="text"
@@ -185,26 +137,6 @@ export default function AddClient({ clientId, onClose, onBack }: AddClientProps)
               className={errors.telephone ? 'error' : ''}
             />
             {errors.telephone && <span className="error-text">{errors.telephone}</span>}
-          </div>
-
-          <div className="add-client-field">
-            <label>Email</label>
-            <input
-              type="email"
-              value={formData.email || ''}
-              onChange={(e) => handleChange('email', e.target.value)}
-              disabled={mode === 'view'}
-            />
-          </div>
-
-          <div className="add-client-field">
-            <label>Address</label>
-            <textarea
-              value={formData.address || ''}
-              onChange={(e) => handleChange('address', e.target.value)}
-              disabled={mode === 'view'}
-              rows={3}
-            />
           </div>
 
           <div className="add-client-field">

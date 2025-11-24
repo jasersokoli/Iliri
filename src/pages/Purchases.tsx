@@ -8,18 +8,12 @@ type PurchaseView = 'menu' | 'list' | 'add';
 export default function Purchases() {
   const [currentView, setCurrentView] = useState<PurchaseView>('menu');
 
-  const handlePrint = () => {
-    window.print();
-  };
 
   if (currentView === 'menu') {
     return (
       <div className="purchases">
         <div className="purchases-header">
           <h1 className="purchases-title">Purchases</h1>
-          <button className="purchases-print-btn" onClick={handlePrint}>
-            🖨️ Print
-          </button>
         </div>
         <div className="purchases-grid">
           <div
@@ -69,9 +63,6 @@ export default function Purchases() {
           ← Back
         </button>
         <h1 className="purchases-title">Purchases</h1>
-        <button className="purchases-print-btn" onClick={handlePrint}>
-          🖨️ Print
-        </button>
       </div>
 
       {currentView === 'list' && (

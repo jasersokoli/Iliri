@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import { useDataStore } from '../../store/dataStore';
-import { generateUniqueCode } from '../../utils/helpers';
 import type { Supplier } from '../../types';
 import Modal from '../Modal';
 import './AddSupplier.css';
@@ -22,7 +21,6 @@ export default function AddSupplier({ supplierId, onClose, onBack }: AddSupplier
 
   const [formData, setFormData] = useState<Partial<Supplier>>({
     name: '',
-    code: '',
     telephone: '',
     active: true,
   });
@@ -43,27 +41,12 @@ export default function AddSupplier({ supplierId, onClose, onBack }: AddSupplier
     }
   };
 
-  const handleGenerateCode = () => {
-    if (mode !== 'edit') return;
-    const existingCodes = suppliers.map((s) => s.code).filter(Boolean);
-    const newCode = generateUniqueCode(existingCodes);
-    handleChange('code', newCode);
-  };
 
   const validate = (): boolean => {
     const newErrors: Record<string, string> = {};
 
     if (!formData.name || formData.name.trim().length === 0) {
       newErrors.name = 'Name is required';
-    }
-
-    if (!formData.code || formData.code.trim().length === 0) {
-      newErrors.code = 'Code is required';
-    } else {
-      const existing = suppliers.find((s) => s.code === formData.code && s.id !== supplierId);
-      if (existing) {
-        newErrors.code = 'Code must be unique';
-      }
     }
 
     if (formData.telephone && !/^[\d\s+\-]+$/.test(formData.telephone)) {
@@ -80,7 +63,7 @@ export default function AddSupplier({ supplierId, onClose, onBack }: AddSupplier
     const supplierData: Supplier = {
       id: existingSupplier?.id || `supplier-${Date.now()}`,
       name: formData.name!,
-      code: formData.code!,
+      code: `SUP-${Date.now()}`,
       telephone: formData.telephone,
       active: formData.active ?? true,
     };
@@ -99,7 +82,7 @@ export default function AddSupplier({ supplierId, onClose, onBack }: AddSupplier
     if (existingSupplier) {
       setFormData(existingSupplier);
     } else {
-      setFormData({ name: '', code: '', telephone: '', active: true });
+      setFormData({ name: '', telephone: '', active: true });
     }
     setErrors({});
     setMode('view');
@@ -142,25 +125,6 @@ export default function AddSupplier({ supplierId, onClose, onBack }: AddSupplier
               className={errors.name ? 'error' : ''}
             />
             {errors.name && <span className="error-text">{errors.name}</span>}
-          </div>
-
-          <div className="add-supplier-field">
-            <label>Code *</label>
-            <div className="code-container">
-              <input
-                type="text"
-                value={formData.code || ''}
-                onChange={(e) => handleChange('code', e.target.value)}
-                disabled={mode === 'view'}
-                className={errors.code ? 'error' : ''}
-              />
-              {mode === 'edit' && (
-                <button type="button" onClick={handleGenerateCode}>
-                  Generate
-                </button>
-              )}
-            </div>
-            {errors.code && <span className="error-text">{errors.code}</span>}
           </div>
 
           <div className="add-supplier-field">

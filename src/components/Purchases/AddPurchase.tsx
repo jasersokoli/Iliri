@@ -220,7 +220,7 @@ export default function AddPurchase({ onClose, onBack }: AddPurchaseProps) {
                         <span className="error-text">{errors[`qty-${index}`]}</span>
                       )}
                     </td>
-                    <td>${item.total.toFixed(2)}</td>
+                    <td>{item.total.toFixed(2)}</td>
                     <td>
                       <button onClick={() => handleRemoveItem(index)}>Remove</button>
                     </td>
@@ -237,7 +237,7 @@ export default function AddPurchase({ onClose, onBack }: AddPurchaseProps) {
 
           <div className="add-purchase-summary">
             <div className="add-purchase-total">
-              <strong>Grand Total: ${grandTotal.toFixed(2)}</strong>
+              <strong>Grand Total: {grandTotal.toFixed(2)}</strong>
             </div>
           </div>
         </div>

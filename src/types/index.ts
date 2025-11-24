@@ -72,6 +72,7 @@ export interface Sale {
   unitPrice: number;
   total: number;
   paid: boolean;
+  paidAmount?: number;
   items: SaleItem[];
 }
 

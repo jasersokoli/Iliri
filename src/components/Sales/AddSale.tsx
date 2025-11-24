@@ -21,6 +21,7 @@ export default function AddSale({ onClose, onBack }: AddSaleProps) {
   const [saleDate] = useState(new Date());
   const [items, setItems] = useState<SaleItem[]>([]);
   const [notPaid, setNotPaid] = useState(false);
+  const [paidAmount, setPaidAmount] = useState<number | ''>('');
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [showAddArticle, setShowAddArticle] = useState(false);
   const [showAddClient, setShowAddClient] = useState(false);
@@ -66,8 +67,11 @@ export default function AddSale({ onClose, onBack }: AddSaleProps) {
         } else if (value === 'Price 3') {
           item.unitPrice = article.price3 || article.price1;
         } else {
-          // Custom price - keep current unitPrice
+          // Custom price - keep current unitPrice or use price1 as default
           item.priceType = 'Custom';
+          if (!item.unitPrice || item.unitPrice === 0) {
+            item.unitPrice = article.price1;
+          }
         }
       }
     } else if (field === 'unitPrice') {
@@ -75,7 +79,14 @@ export default function AddSale({ onClose, onBack }: AddSaleProps) {
       item.unitPrice = price;
       const article = articles.find((a) => a.id === item.articleId);
       if (article) {
-        if (price !== article.price1 && price !== article.price2 && price !== article.price3) {
+        // If price matches one of the standard prices, update priceType accordingly
+        if (price === article.price1) {
+          item.priceType = 'Price 1';
+        } else if (price === article.price2) {
+          item.priceType = 'Price 2';
+        } else if (price === article.price3) {
+          item.priceType = 'Price 3';
+        } else {
           item.priceType = 'Custom';
         }
       }
@@ -130,6 +141,9 @@ export default function AddSale({ onClose, onBack }: AddSaleProps) {
     const priceType = items[0]?.priceType || 'Price 1';
     const unitPrice = items[0]?.unitPrice || 0;
 
+    const paidAmt = typeof paidAmount === 'number' ? paidAmount : (paidAmount === '' ? 0 : parseFloat(String(paidAmount)) || 0);
+    const isFullyPaid = !notPaid && (paidAmt >= total || paidAmt === 0);
+    
     const sale: Sale = {
       id: `sale-${Date.now()}`,
       number: saleNumber,
@@ -141,7 +155,8 @@ export default function AddSale({ onClose, onBack }: AddSaleProps) {
       priceType,
       unitPrice,
       total,
-      paid: !notPaid,
+      paid: isFullyPaid,
+      paidAmount: paidAmt > 0 ? paidAmt : undefined,
       items: items.map((item) => ({ ...item })),
     };
 
@@ -174,6 +189,7 @@ export default function AddSale({ onClose, onBack }: AddSaleProps) {
               setItems([]);
               setErrors({});
               setNotPaid(false);
+              setPaidAmount('');
             }}>
               Add New
             </button>
@@ -253,10 +269,18 @@ export default function AddSale({ onClose, onBack }: AddSaleProps) {
                         value={item.priceType}
                         onChange={(e) => handleItemChange(index, 'priceType', e.target.value)}
                       >
-                        <option value="Price 1">Price 1</option>
-                        <option value="Price 2">Price 2</option>
-                        <option value="Price 3">Price 3</option>
-                        <option value="Custom">Custom</option>
+                        {(() => {
+                          const article = articles.find((a) => a.id === item.articleId);
+                          if (!article) return null;
+                          return (
+                            <>
+                              <option value="Price 1">Price 1 ({article.price1})</option>
+                              {article.price2 && <option value="Price 2">Price 2 ({article.price2})</option>}
+                              {article.price3 && <option value="Price 3">Price 3 ({article.price3})</option>}
+                              <option value="Custom">Custom</option>
+                            </>
+                          );
+                        })()}
                       </select>
                     </td>
                     <td>
@@ -265,6 +289,7 @@ export default function AddSale({ onClose, onBack }: AddSaleProps) {
                         step="0.01"
                         value={item.unitPrice || ''}
                         onChange={(e) => handleItemChange(index, 'unitPrice', e.target.value)}
+                        disabled={item.articleId !== '' && item.priceType !== 'Custom'}
                       />
                       {errors[`price-${index}`] && (
                         <span className="error-text">{errors[`price-${index}`]}</span>
@@ -281,7 +306,7 @@ export default function AddSale({ onClose, onBack }: AddSaleProps) {
                         <span className="error-text">{errors[`qty-${index}`]}</span>
                       )}
                     </td>
-                    <td>${item.total.toFixed(2)}</td>
+                    <td>{item.total.toFixed(2)}</td>
                     <td>
                       <button onClick={() => handleRemoveItem(index)}>Remove</button>
                     </td>
@@ -301,15 +326,39 @@ export default function AddSale({ onClose, onBack }: AddSaleProps) {
               <input
                 type="checkbox"
                 checked={notPaid}
-                onChange={(e) => setNotPaid(e.target.checked)}
+                onChange={(e) => {
+                  setNotPaid(e.target.checked);
+                  if (!e.target.checked) {
+                    setPaidAmount('');
+                  }
+                }}
               />
               Not Paid
             </label>
+            {!notPaid && (
+              <div className="add-sale-paid-amount">
+                <label>Amount Paid</label>
+                <input
+                  type="number"
+                  step="0.01"
+                  value={paidAmount}
+                  onChange={(e) => {
+                    const value = e.target.value === '' ? '' : parseFloat(e.target.value) || 0;
+                    setPaidAmount(value);
+                  }}
+                  placeholder="0.00"
+                  max={grandTotal}
+                />
+                <span className="add-sale-remaining">
+                  Remaining: {(grandTotal - (typeof paidAmount === 'number' ? paidAmount : (paidAmount === '' ? 0 : parseFloat(String(paidAmount)) || 0))).toFixed(2)}
+                </span>
+              </div>
+            )}
           </div>
 
           <div className="add-sale-summary">
             <div className="add-sale-total">
-              <strong>Grand Total: ${grandTotal.toFixed(2)}</strong>
+              <strong>Grand Total: {grandTotal.toFixed(2)}</strong>
             </div>
           </div>
         </div>
