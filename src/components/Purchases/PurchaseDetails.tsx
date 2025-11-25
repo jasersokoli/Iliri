@@ -24,7 +24,7 @@ export default function PurchaseDetails({ purchaseId, onClose }: PurchaseDetails
             <div><strong>Supplier:</strong> {purchase.supplierName}</div>
             <div><strong>Date:</strong> {format(purchase.date, 'dd/MM/yyyy')}</div>
             <div><strong>Created by:</strong> {purchase.username}</div>
-            <div><strong>Total:</strong> ${purchase.total.toFixed(2)}</div>
+            <div><strong>Total:</strong> {purchase.total.toFixed(2)}</div>
           </div>
         </div>
 
@@ -44,9 +44,9 @@ export default function PurchaseDetails({ purchaseId, onClose }: PurchaseDetails
                 <tr key={index}>
                   <td>{item.articleCode}</td>
                   <td>{item.articleName}</td>
-                  <td>${item.unitCost.toFixed(2)}</td>
+                  <td>{item.unitCost.toFixed(2)}</td>
                   <td>{item.quantity}</td>
-                  <td>${item.total.toFixed(2)}</td>
+                  <td>{item.total.toFixed(2)}</td>
                 </tr>
               ))}
             </tbody>

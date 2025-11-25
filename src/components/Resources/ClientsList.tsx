@@ -95,6 +95,12 @@ export default function ClientsList({ onClose, onSelectClient }: ClientsListProp
             <button className="clients-add-btn" onClick={() => setShowAddModal(true)}>
               Add New Client
             </button>
+            <button
+              className="clients-print-btn"
+              onClick={() => window.print()}
+            >
+              🖨️ Print
+            </button>
           </div>
 
           <div className="clients-table-container">

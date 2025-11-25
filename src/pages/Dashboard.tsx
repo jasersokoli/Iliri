@@ -44,17 +44,11 @@ export default function Dashboard() {
     { name: 'Jun', value: (analytics?.totalSales || 0) * 1.4 },
   ];
 
-  const handlePrint = () => {
-    window.print();
-  };
 
   return (
     <div className="dashboard">
       <div className="dashboard-header">
         <h1 className="dashboard-title">Dashboard</h1>
-        <button className="dashboard-print-btn" onClick={handlePrint}>
-          🖨️ Print
-        </button>
       </div>
 
       <div className="dashboard-grid">

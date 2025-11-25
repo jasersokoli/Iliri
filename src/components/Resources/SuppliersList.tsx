@@ -79,6 +79,12 @@ export default function SuppliersList({ onClose, onSelectSupplier }: SuppliersLi
             <button className="suppliers-add-btn" onClick={() => setShowAddModal(true)}>
               Add New Supplier
             </button>
+            <button
+              className="suppliers-print-btn"
+              onClick={() => window.print()}
+            >
+              🖨️ Print
+            </button>
           </div>
 
           <div className="suppliers-table-container">

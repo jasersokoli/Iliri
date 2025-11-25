@@ -111,6 +111,12 @@ export default function ArticlesList({ onClose, onSelectArticle }: ArticlesListP
             >
               Add New Article
             </button>
+            <button
+              className="articles-print-btn"
+              onClick={() => window.print()}
+            >
+              🖨️ Print
+            </button>
           </div>
 
           <div className="articles-table-container">

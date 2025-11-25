@@ -10,7 +10,7 @@ interface PurchasesListProps {
 }
 
 export default function PurchasesList({ onClose }: PurchasesListProps) {
-  const { purchases, suppliers } = useDataStore();
+  const { purchases, suppliers, refreshAnalytics } = useDataStore();
   const [search, setSearch] = useState('');
   const [selectedSupplier, setSelectedSupplier] = useState<string>('All');
   const [showOnlyMine, setShowOnlyMine] = useState(false);
@@ -74,8 +74,14 @@ export default function PurchasesList({ onClose }: PurchasesListProps) {
               />
               Only my purchases
             </label>
-            <button className="purchases-refresh" onClick={() => window.location.reload()}>
+            <button className="purchases-refresh" onClick={() => refreshAnalytics()}>
               🔄
+            </button>
+            <button
+              className="purchases-print-btn"
+              onClick={() => window.print()}
+            >
+              🖨️ Print
             </button>
           </div>
 

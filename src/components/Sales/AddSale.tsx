@@ -45,7 +45,10 @@ export default function AddSale({ onClose, onBack }: AddSaleProps) {
     const newItems = [...items];
     const item = newItems[index];
 
-    if (field === 'articleCode' || field === 'articleName') {
+    if (field === 'articleCode') {
+      // Always update the articleCode field
+      item.articleCode = value;
+      // Try to find matching article
       const article = articles.find(
         (a) => a.code1 === value || a.name.toLowerCase() === value.toLowerCase()
       );
@@ -55,6 +58,12 @@ export default function AddSale({ onClose, onBack }: AddSaleProps) {
         item.articleName = article.name;
         item.priceType = 'Price 1';
         item.unitPrice = article.price1;
+        // Recalculate total
+        item.total = item.unitPrice * item.quantity;
+      } else {
+        // Clear article info if no match
+        item.articleId = '';
+        item.articleName = '';
       }
     } else if (field === 'priceType') {
       const article = articles.find((a) => a.id === item.articleId);
@@ -268,10 +277,13 @@ export default function AddSale({ onClose, onBack }: AddSaleProps) {
                       <select
                         value={item.priceType}
                         onChange={(e) => handleItemChange(index, 'priceType', e.target.value)}
+                        disabled={!item.articleId}
                       >
                         {(() => {
                           const article = articles.find((a) => a.id === item.articleId);
-                          if (!article) return null;
+                          if (!article) {
+                            return <option value="Price 1">Select article first</option>;
+                          }
                           return (
                             <>
                               <option value="Price 1">Price 1 ({article.price1})</option>

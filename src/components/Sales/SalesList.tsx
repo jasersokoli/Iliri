@@ -79,8 +79,14 @@ export default function SalesList({ onClose }: SalesListProps) {
               />
               Only my sales
             </label>
-            <button className="sales-refresh" onClick={() => window.location.reload()}>
+            <button className="sales-refresh" onClick={() => refreshAnalytics()}>
               🔄
+            </button>
+            <button
+              className="sales-print-btn"
+              onClick={() => window.print()}
+            >
+              🖨️ Print
             </button>
           </div>
 
