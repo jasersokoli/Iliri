@@ -16,6 +16,10 @@ export default function SaleDetails({ saleId, onClose }: SaleDetailsProps) {
   const [showPaymentInput, setShowPaymentInput] = useState(false);
 
   const payments = sale ? getPaymentsBySaleId(sale.id) : [];
+  // Calculate total paid from payments
+  const totalPaidFromPayments = payments.reduce((sum, p) => sum + p.amount, 0);
+  // Use payments total or sale.paidAmount, whichever is more accurate
+  const displayPaidAmount = totalPaidFromPayments > 0 ? totalPaidFromPayments : (sale.paidAmount || 0);
 
   if (!sale) {
     return null;
@@ -23,7 +27,8 @@ export default function SaleDetails({ saleId, onClose }: SaleDetailsProps) {
 
   const handleAddPayment = () => {
     const amount = parseFloat(paymentAmount);
-    if (amount > 0 && amount <= (sale.total - (sale.paidAmount || 0))) {
+    const remaining = sale.total - displayPaidAmount;
+    if (amount > 0 && amount <= remaining) {
       addPayment({
         id: `payment-${Date.now()}`,
         saleId: sale.id,
@@ -60,7 +65,7 @@ export default function SaleDetails({ saleId, onClose }: SaleDetailsProps) {
             <div><strong>Date:</strong> {format(sale.date, 'dd/MM/yyyy')}</div>
             <div><strong>Created by:</strong> {sale.username}</div>
             <div><strong>Total:</strong> ${sale.total.toFixed(2)}</div>
-            <div><strong>Paid:</strong> {sale.paid ? 'Yes' : `$${(sale.paidAmount || 0).toFixed(2)} / $${sale.total.toFixed(2)}`}</div>
+            <div><strong>Paid:</strong> {sale.paid ? 'Yes' : `$${displayPaidAmount.toFixed(2)} / $${sale.total.toFixed(2)}`}</div>
           </div>
         </div>
 
@@ -73,7 +78,7 @@ export default function SaleDetails({ saleId, onClose }: SaleDetailsProps) {
                 step="0.01"
                 value={paymentAmount}
                 onChange={(e) => setPaymentAmount(e.target.value)}
-                max={sale.total - (sale.paidAmount || 0)}
+                max={sale.total - displayPaidAmount}
                 placeholder="0.00"
               />
             </label>

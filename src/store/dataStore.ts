@@ -285,7 +285,33 @@ export const useDataStore = create<DataState>((set, get) => ({
   // Payments
   payments: [],
   setPayments: (payments) => set({ payments }),
-  addPayment: (payment) => set((state) => ({ payments: [...state.payments, payment] })),
+  addPayment: (payment) => {
+    const state = get();
+    // Add the payment
+    const newPayments = [...state.payments, payment];
+    
+    // Calculate total paid amount for this sale
+    const totalPaid = newPayments
+      .filter((p) => p.saleId === payment.saleId)
+      .reduce((sum, p) => sum + p.amount, 0);
+    
+    // Find the sale and update its paidAmount and paid status
+    const sale = state.sales.find((s) => s.id === payment.saleId);
+    if (sale) {
+      const isFullyPaid = totalPaid >= sale.total;
+      set({
+        payments: newPayments,
+        sales: state.sales.map((s) =>
+          s.id === payment.saleId
+            ? { ...s, paidAmount: totalPaid, paid: isFullyPaid }
+            : s
+        ),
+      });
+      get().refreshAnalytics();
+    } else {
+      set({ payments: newPayments });
+    }
+  },
   getPaymentsBySaleId: (saleId) => {
     const state = get();
     return state.payments.filter((p) => p.saleId === saleId).sort((a, b) => b.timestamp.getTime() - a.timestamp.getTime());

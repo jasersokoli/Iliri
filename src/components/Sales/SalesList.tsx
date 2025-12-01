@@ -10,7 +10,7 @@ interface SalesListProps {
 }
 
 export default function SalesList({ onClose }: SalesListProps) {
-  const { sales, clients, updateSale, refreshAnalytics, deleteSale } = useDataStore();
+  const { sales, clients, updateSale, refreshAnalytics, deleteSale, getPaymentsBySaleId } = useDataStore();
   const [search, setSearch] = useState('');
   const [selectedClient, setSelectedClient] = useState<string>('All');
   const [showOnlyMine, setShowOnlyMine] = useState(false);
@@ -129,6 +129,7 @@ export default function SalesList({ onClose }: SalesListProps) {
                   <th>Reference</th>
                   <th>Username</th>
                   <th>Date</th>
+                  <th>Time</th>
                   <th>Price Type</th>
                   <th>Unit Price</th>
                   <th>Total</th>
@@ -138,7 +139,7 @@ export default function SalesList({ onClose }: SalesListProps) {
               <tbody>
                 {filteredSales.length === 0 ? (
                   <tr>
-                    <td colSpan={10} className="sales-empty">
+                    <td colSpan={11} className="sales-empty">
                       No sales found
                     </td>
                   </tr>
@@ -173,17 +174,25 @@ export default function SalesList({ onClose }: SalesListProps) {
                       <td>{sale.clientReference || '-'}</td>
                       <td>{sale.username}</td>
                       <td>{format(sale.date, 'dd/MM/yyyy')}</td>
+                      <td>{format(sale.date, 'HH:mm:ss')}</td>
                       <td>{sale.priceType === 'Price 1' ? '1' : sale.priceType === 'Price 2' ? '2' : sale.priceType === 'Price 3' ? '3' : 'Custom'}</td>
                       <td>${sale.unitPrice.toFixed(2)}</td>
                       <td>${sale.total.toFixed(2)}</td>
                       <td>
-                        {sale.paid ? (
-                          <span>✓ Paid</span>
-                        ) : (
-                          <span>
-                            {sale.paidAmount ? `$${sale.paidAmount.toFixed(2)} / $${sale.total.toFixed(2)}` : 'Unpaid'}
-                          </span>
-                        )}
+                        {(() => {
+                          const payments = getPaymentsBySaleId(sale.id);
+                          const totalPaid = payments.reduce((sum, p) => sum + p.amount, 0);
+                          const displayPaid = totalPaid > 0 ? totalPaid : (sale.paidAmount || 0);
+                          const isFullyPaid = displayPaid >= sale.total;
+                          
+                          return isFullyPaid ? (
+                            <span>✓ Paid</span>
+                          ) : (
+                            <span>
+                              {displayPaid > 0 ? `$${displayPaid.toFixed(2)} / $${sale.total.toFixed(2)}` : 'Unpaid'}
+                            </span>
+                          );
+                        })()}
                       </td>
                     </tr>
                   ))
