@@ -70,12 +70,19 @@ export default function AddSupplier({ supplierId, onClose, onBack }: AddSupplier
 
     if (existingSupplier) {
       updateSupplier(existingSupplier.id, supplierData);
+      setMode('view');
+      onBack();
     } else {
       addSupplier(supplierData);
+      // Stay in modal for new supplier, just reset form
+      setFormData({
+        name: '',
+        telephone: '',
+        active: true,
+      });
+      setMode('edit');
+      setErrors({});
     }
-
-    setMode('view');
-    onBack();
   };
 
   const handleCancel = () => {

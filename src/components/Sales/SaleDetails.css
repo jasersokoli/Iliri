@@ -9,6 +9,37 @@
   border-bottom: 1px solid var(--border-color);
 }
 
+.sale-details-actions {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.sale-details-print-btn,
+.sale-details-payment-btn {
+  padding: 8px 16px;
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  background: var(--bg-tertiary);
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.sale-details-print-btn:hover,
+.sale-details-payment-btn:hover {
+  background: var(--bg-secondary);
+}
+
+.sale-details-payment-btn {
+  background: var(--primary-color);
+  color: white;
+  border-color: var(--primary-color);
+}
+
+.sale-details-payment-btn:hover {
+  background: var(--primary-color-dark, var(--primary-color));
+}
+
 .sale-details-info {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -38,6 +69,80 @@
 }
 
 .sale-details-table td {
+  padding: 12px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.sale-details-payment-input {
+  padding: 16px;
+  background: var(--bg-secondary);
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.sale-details-payment-input label {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.sale-details-payment-input input {
+  padding: 8px;
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.sale-details-payment-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.sale-details-payment-actions button {
+  padding: 8px 16px;
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  background: var(--bg-tertiary);
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.sale-details-payment-actions button:first-child {
+  background: var(--primary-color);
+  color: white;
+  border-color: var(--primary-color);
+}
+
+.sale-details-payment-history {
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 1px solid var(--border-color);
+}
+
+.sale-details-payment-history h3 {
+  margin: 0 0 12px 0;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.sale-details-payment-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.sale-details-payment-table th {
+  padding: 12px;
+  text-align: left;
+  font-weight: 600;
+  background-color: var(--bg-secondary);
+  border-bottom: 2px solid var(--border-color);
+}
+
+.sale-details-payment-table td {
   padding: 12px;
   border-bottom: 1px solid var(--border-color);
 }

@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { useDataStore } from '../../store/dataStore';
 import { format } from 'date-fns';
 import Modal from '../Modal';
@@ -10,12 +10,18 @@ interface SalesListProps {
 }
 
 export default function SalesList({ onClose }: SalesListProps) {
-  const { sales, clients, updateSale, refreshAnalytics } = useDataStore();
+  const { sales, clients, updateSale, refreshAnalytics, deleteSale } = useDataStore();
   const [search, setSearch] = useState('');
   const [selectedClient, setSelectedClient] = useState<string>('All');
   const [showOnlyMine, setShowOnlyMine] = useState(false);
   const [selectedSaleId, setSelectedSaleId] = useState<string | null>(null);
   const [showDetails, setShowDetails] = useState(false);
+  const [selectedSales, setSelectedSales] = useState<Set<string>>(new Set());
+
+  // Auto-refresh when modal opens
+  useEffect(() => {
+    refreshAnalytics();
+  }, []);
 
   const filteredSales = useMemo(() => {
     let filtered = [...sales].sort((a, b) => b.date.getTime() - a.date.getTime());
@@ -79,9 +85,20 @@ export default function SalesList({ onClose }: SalesListProps) {
               />
               Only my sales
             </label>
-            <button className="sales-refresh" onClick={() => refreshAnalytics()}>
-              🔄
-            </button>
+            {selectedSales.size > 0 && (
+              <button
+                className="sales-delete-selected"
+                onClick={() => {
+                  if (window.confirm(`Are you sure you want to delete ${selectedSales.size} sale(s)?`)) {
+                    selectedSales.forEach((id) => deleteSale(id));
+                    setSelectedSales(new Set());
+                    refreshAnalytics();
+                  }
+                }}
+              >
+                Delete Selected ({selectedSales.size})
+              </button>
+            )}
             <button
               className="sales-print-btn"
               onClick={() => window.print()}
@@ -94,6 +111,19 @@ export default function SalesList({ onClose }: SalesListProps) {
             <table className="sales-table">
               <thead>
                 <tr>
+                  <th>
+                    <input
+                      type="checkbox"
+                      checked={selectedSales.size === filteredSales.length && filteredSales.length > 0}
+                      onChange={(e) => {
+                        if (e.target.checked) {
+                          setSelectedSales(new Set(filteredSales.map((s) => s.id)));
+                        } else {
+                          setSelectedSales(new Set());
+                        }
+                      }}
+                    />
+                  </th>
                   <th>Number</th>
                   <th>Customer</th>
                   <th>Reference</th>
@@ -108,7 +138,7 @@ export default function SalesList({ onClose }: SalesListProps) {
               <tbody>
                 {filteredSales.length === 0 ? (
                   <tr>
-                    <td colSpan={9} className="sales-empty">
+                    <td colSpan={10} className="sales-empty">
                       No sales found
                     </td>
                   </tr>
@@ -123,12 +153,27 @@ export default function SalesList({ onClose }: SalesListProps) {
                         setShowDetails(true);
                       }}
                     >
+                      <td onClick={(e) => e.stopPropagation()}>
+                        <input
+                          type="checkbox"
+                          checked={selectedSales.has(sale.id)}
+                          onChange={(e) => {
+                            const newSelected = new Set(selectedSales);
+                            if (e.target.checked) {
+                              newSelected.add(sale.id);
+                            } else {
+                              newSelected.delete(sale.id);
+                            }
+                            setSelectedSales(newSelected);
+                          }}
+                        />
+                      </td>
                       <td>{sale.number}</td>
                       <td>{sale.clientName}</td>
                       <td>{sale.clientReference || '-'}</td>
                       <td>{sale.username}</td>
                       <td>{format(sale.date, 'dd/MM/yyyy')}</td>
-                      <td>{sale.priceType}</td>
+                      <td>{sale.priceType === 'Price 1' ? '1' : sale.priceType === 'Price 2' ? '2' : sale.priceType === 'Price 3' ? '3' : 'Custom'}</td>
                       <td>${sale.unitPrice.toFixed(2)}</td>
                       <td>${sale.total.toFixed(2)}</td>
                       <td>

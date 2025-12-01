@@ -9,6 +9,8 @@ import type {
   DashboardAnalytics,
   TopProduct,
   ActiveClient,
+  Payment,
+  ClientArticlePrice,
 } from '../types';
 
 interface DataState {
@@ -64,6 +66,18 @@ interface DataState {
 
   // Refresh analytics
   refreshAnalytics: () => void;
+
+  // Payments
+  payments: Payment[];
+  setPayments: (payments: Payment[]) => void;
+  addPayment: (payment: Payment) => void;
+  getPaymentsBySaleId: (saleId: string) => Payment[];
+
+  // Client-Article Prices (last used prices)
+  clientArticlePrices: ClientArticlePrice[];
+  setClientArticlePrices: (prices: ClientArticlePrice[]) => void;
+  getLastUsedPrice: (clientId: string, articleId: string) => ClientArticlePrice | null;
+  updateLastUsedPrice: (clientId: string, articleId: string, price: number, priceType: 'Price 1' | 'Price 2' | 'Price 3' | 'Custom') => void;
 }
 
 export const useDataStore = create<DataState>((set, get) => ({
@@ -127,10 +141,32 @@ export const useDataStore = create<DataState>((set, get) => ({
     set((state) => ({
       sales: state.sales.map((s) => (s.id === id ? { ...s, ...updates } : s)),
     })),
-  deleteSale: (id) =>
-    set((state) => ({
-      sales: state.sales.filter((s) => s.id !== id),
-    })),
+  deleteSale: (id) => {
+    const state = get();
+    const sale = state.sales.find((s) => s.id === id);
+    if (sale) {
+      // Restore stock for all items in the sale
+      const updatedArticles = [...state.articles];
+      sale.items.forEach((item) => {
+        const articleIndex = updatedArticles.findIndex((a) => a.id === item.articleId);
+        if (articleIndex >= 0) {
+          updatedArticles[articleIndex] = {
+            ...updatedArticles[articleIndex],
+            currentStock: updatedArticles[articleIndex].currentStock + item.quantity,
+          };
+        }
+      });
+      set({
+        articles: updatedArticles,
+        sales: state.sales.filter((s) => s.id !== id),
+      });
+      get().refreshAnalytics();
+    } else {
+      set((state) => ({
+        sales: state.sales.filter((s) => s.id !== id),
+      }));
+    }
+  },
 
   // Notifications
   notifications: [],
@@ -244,6 +280,54 @@ export const useDataStore = create<DataState>((set, get) => ({
       .slice(0, 10);
 
     set({ activeClients });
+  },
+
+  // Payments
+  payments: [],
+  setPayments: (payments) => set({ payments }),
+  addPayment: (payment) => set((state) => ({ payments: [...state.payments, payment] })),
+  getPaymentsBySaleId: (saleId) => {
+    const state = get();
+    return state.payments.filter((p) => p.saleId === saleId).sort((a, b) => b.timestamp.getTime() - a.timestamp.getTime());
+  },
+
+  // Client-Article Prices
+  clientArticlePrices: [],
+  setClientArticlePrices: (prices) => set({ clientArticlePrices: prices }),
+  getLastUsedPrice: (clientId, articleId) => {
+    const state = get();
+    return state.clientArticlePrices.find(
+      (p) => p.clientId === clientId && p.articleId === articleId
+    ) || null;
+  },
+  updateLastUsedPrice: (clientId, articleId, price, priceType) => {
+    const state = get();
+    const existing = state.clientArticlePrices.find(
+      (p) => p.clientId === clientId && p.articleId === articleId
+    );
+    if (existing) {
+      set({
+        clientArticlePrices: state.clientArticlePrices.map((p) =>
+          p.id === existing.id
+            ? { ...p, lastPrice: price, priceType, lastUsedAt: new Date() }
+            : p
+        ),
+      });
+    } else {
+      set({
+        clientArticlePrices: [
+          ...state.clientArticlePrices,
+          {
+            id: `cap-${Date.now()}`,
+            clientId,
+            articleId,
+            lastPrice: price,
+            priceType,
+            lastUsedAt: new Date(),
+          },
+        ],
+      });
+    }
   },
 }));
 

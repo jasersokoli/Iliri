@@ -114,3 +114,19 @@ export interface ActiveClient {
   totalPurchases: number;
 }
 
+export interface Payment {
+  id: string;
+  saleId: string;
+  amount: number;
+  timestamp: Date;
+}
+
+export interface ClientArticlePrice {
+  id: string;
+  clientId: string;
+  articleId: string;
+  lastPrice: number;
+  priceType: 'Price 1' | 'Price 2' | 'Price 3' | 'Custom';
+  lastUsedAt: Date;
+}
+

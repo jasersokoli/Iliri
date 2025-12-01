@@ -24,17 +24,17 @@
 
 .modal-small {
   width: 100%;
-  max-width: 400px;
+  max-width: 500px;
 }
 
 .modal-medium {
   width: 100%;
-  max-width: 600px;
+  max-width: 800px;
 }
 
 .modal-large {
   width: 100%;
-  max-width: 900px;
+  max-width: 1200px;
 }
 
 .modal-header {

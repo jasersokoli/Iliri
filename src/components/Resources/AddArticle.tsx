@@ -39,7 +39,23 @@ export default function AddArticle({ articleId, onClose, onBack }: AddArticlePro
       setFormData(existingArticle);
       setMode('view');
     } else {
+      // Reset all fields when adding new article
+      setFormData({
+        name: '',
+        code1: '',
+        cost: 0,
+        currentStock: 0,
+        minimumStock: undefined,
+        price1: 0,
+        price2: undefined,
+        price3: undefined,
+        supplierId: '',
+        unit: 'pcs',
+        active: true,
+      });
       setMode('edit');
+      setIsDirty(false);
+      setErrors({});
     }
   }, [articleId, existingArticle]);
 
@@ -54,6 +70,10 @@ export default function AddArticle({ articleId, onClose, onBack }: AddArticlePro
 
   const validate = (): boolean => {
     const newErrors: Record<string, string> = {};
+
+    if (!formData.code1 || formData.code1.trim().length === 0) {
+      newErrors.code1 = 'Article Code is required';
+    }
 
     if (!formData.name || formData.name.trim().length === 0) {
       newErrors.name = 'Name is required';
@@ -89,7 +109,7 @@ export default function AddArticle({ articleId, onClose, onBack }: AddArticlePro
     const articleData: Article = {
       id: existingArticle?.id || `article-${Date.now()}`,
       name: formData.name!,
-      code1: formData.code1 || `ART-${Date.now()}`,
+      code1: formData.code1!,
       cost: formData.cost || 0,
       currentStock: formData.currentStock || 0,
       minimumStock: formData.minimumStock,
@@ -206,16 +226,30 @@ export default function AddArticle({ articleId, onClose, onBack }: AddArticlePro
         </div>
 
         <div className="add-article-form">
-          <div className="add-article-field">
-            <label className="add-article-label">Name of Article *</label>
-            <input
-              type="text"
-              value={formData.name || ''}
-              onChange={(e) => handleChange('name', e.target.value)}
-              disabled={mode === 'view'}
-              className={`add-article-input ${errors.name ? 'error' : ''}`}
-            />
-            {errors.name && <span className="add-article-error">{errors.name}</span>}
+          <div className="add-article-row">
+            <div className="add-article-field">
+              <label className="add-article-label">Article Code *</label>
+              <input
+                type="text"
+                value={formData.code1 || ''}
+                onChange={(e) => handleChange('code1', e.target.value)}
+                disabled={mode === 'view'}
+                className={`add-article-input ${errors.code1 ? 'error' : ''}`}
+              />
+              {errors.code1 && <span className="add-article-error">{errors.code1}</span>}
+            </div>
+
+            <div className="add-article-field">
+              <label className="add-article-label">Name of Article *</label>
+              <input
+                type="text"
+                value={formData.name || ''}
+                onChange={(e) => handleChange('name', e.target.value)}
+                disabled={mode === 'view'}
+                className={`add-article-input ${errors.name ? 'error' : ''}`}
+              />
+              {errors.name && <span className="add-article-error">{errors.name}</span>}
+            </div>
           </div>
 
           <div className="add-article-row">

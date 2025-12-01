@@ -70,12 +70,19 @@ export default function AddClient({ clientId, onClose, onBack }: AddClientProps)
 
     if (existingClient) {
       updateClient(existingClient.id, clientData);
+      setMode('view');
+      onBack();
     } else {
       addClient(clientData);
+      // Stay in modal for new client, just reset form
+      setFormData({
+        name: '',
+        telephone: '',
+        active: true,
+      });
+      setMode('edit');
+      setErrors({});
     }
-
-    setMode('view');
-    onBack();
   };
 
   const handleCancel = () => {

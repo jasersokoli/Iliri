@@ -2,10 +2,11 @@ import { useState, useEffect } from 'react';
 import { useDataStore } from '../../store/dataStore';
 import { useAuthStore } from '../../store/authStore';
 import { format } from 'date-fns';
-import type { Purchase, PurchaseItem } from '../../types';
+import type { Purchase, PurchaseItem, Article } from '../../types';
 import Modal from '../Modal';
 import AddArticle from '../Resources/AddArticle';
 import AddSupplier from '../Resources/AddSupplier';
+import ArticleSearchInput from '../ArticleSearchInput';
 import './AddPurchase.css';
 
 interface AddPurchaseProps {
@@ -47,18 +48,68 @@ export default function AddPurchase({ onClose, onBack }: AddPurchaseProps) {
       newItems[index].total = unitCost * quantity;
     }
 
-    if (field === 'articleCode' || field === 'articleName') {
-      const article = articles.find(
-        (a) => a.code1 === value || a.name.toLowerCase() === value.toLowerCase()
-      );
-      if (article) {
-        newItems[index].articleId = article.id;
-        newItems[index].articleCode = article.code1;
-        newItems[index].articleName = article.name;
-        newItems[index].unitCost = article.cost;
+    setItems(newItems);
+  };
+
+  const handleArticleSelectByCode = (index: number, article: Article) => {
+    const newItems = [...items];
+    newItems[index].articleId = article.id;
+    newItems[index].articleCode = article.code1;
+    newItems[index].articleName = article.name;
+    newItems[index].unitCost = article.cost;
+    newItems[index].total = article.cost * newItems[index].quantity;
+    setItems(newItems);
+  };
+
+  const handleArticleSelectByName = (index: number, article: Article) => {
+    const newItems = [...items];
+    newItems[index].articleId = article.id;
+    newItems[index].articleCode = article.code1;
+    newItems[index].articleName = article.name;
+    newItems[index].unitCost = article.cost;
+    newItems[index].total = article.cost * newItems[index].quantity;
+    setItems(newItems);
+  };
+
+  const handleArticleCodeChange = (index: number, value: string) => {
+    const newItems = [...items];
+    newItems[index].articleCode = value;
+    // Try to find article by code
+    const article = articles.find((a) => a.code1 === value || a.code2 === value);
+    if (article) {
+      newItems[index].articleId = article.id;
+      newItems[index].articleCode = article.code1;
+      newItems[index].articleName = article.name;
+      newItems[index].unitCost = article.cost;
+      newItems[index].total = article.cost * newItems[index].quantity;
+    } else {
+      // Clear if no match
+      if (!value) {
+        newItems[index].articleId = '';
+        newItems[index].articleName = '';
       }
     }
+    setItems(newItems);
+  };
 
+  const handleArticleNameChange = (index: number, value: string) => {
+    const newItems = [...items];
+    newItems[index].articleName = value;
+    // Try to find article by name
+    const article = articles.find((a) => a.name.toLowerCase() === value.toLowerCase());
+    if (article) {
+      newItems[index].articleId = article.id;
+      newItems[index].articleCode = article.code1;
+      newItems[index].articleName = article.name;
+      newItems[index].unitCost = article.cost;
+      newItems[index].total = article.cost * newItems[index].quantity;
+    } else {
+      // Clear if no match
+      if (!value) {
+        newItems[index].articleId = '';
+        newItems[index].articleCode = '';
+      }
+    }
     setItems(newItems);
   };
 
@@ -187,17 +238,28 @@ export default function AddPurchase({ onClose, onBack }: AddPurchaseProps) {
                 {items.map((item, index) => (
                   <tr key={index}>
                     <td>
-                      <input
-                        type="text"
+                      <ArticleSearchInput
+                        articles={articles}
                         value={item.articleCode}
-                        onChange={(e) => handleItemChange(index, 'articleCode', e.target.value)}
-                        placeholder="Code or name"
+                        onChange={(value) => handleArticleCodeChange(index, value)}
+                        onSelect={(article) => handleArticleSelectByCode(index, article)}
+                        placeholder="Enter code"
+                        searchBy="code"
                       />
                       {errors[`item-${index}`] && (
                         <span className="error-text">{errors[`item-${index}`]}</span>
                       )}
                     </td>
-                    <td>{item.articleName || '-'}</td>
+                    <td>
+                      <ArticleSearchInput
+                        articles={articles}
+                        value={item.articleName}
+                        onChange={(value) => handleArticleNameChange(index, value)}
+                        onSelect={(article) => handleArticleSelectByName(index, article)}
+                        placeholder="Enter name"
+                        searchBy="name"
+                      />
+                    </td>
                     <td>
                       <input
                         type="number"

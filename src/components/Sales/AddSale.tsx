@@ -1,11 +1,12 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useDataStore } from '../../store/dataStore';
 import { useAuthStore } from '../../store/authStore';
 import { format } from 'date-fns';
-import type { Sale, SaleItem } from '../../types';
+import type { Sale, SaleItem, Article } from '../../types';
 import Modal from '../Modal';
 import AddArticle from '../Resources/AddArticle';
 import AddClient from '../Resources/AddClient';
+import ArticleSearchInput from '../ArticleSearchInput';
 import './AddSale.css';
 
 interface AddSaleProps {
@@ -14,7 +15,7 @@ interface AddSaleProps {
 }
 
 export default function AddSale({ onClose, onBack }: AddSaleProps) {
-  const { articles, clients, sales, addSale, updateArticle, refreshAnalytics } = useDataStore();
+  const { articles, clients, sales, addSale, updateArticle, refreshAnalytics, getLastUsedPrice, updateLastUsedPrice } = useDataStore();
   const { user } = useAuthStore();
   const [selectedClient, setSelectedClient] = useState<string>('');
   const [clientReference, setClientReference] = useState<string>('');
@@ -41,31 +42,106 @@ export default function AddSale({ onClose, onBack }: AddSaleProps) {
     ]);
   };
 
+  const handleArticleSelectByCode = (index: number, article: Article) => {
+    const newItems = [...items];
+    const item = newItems[index];
+    item.articleId = article.id;
+    item.articleCode = article.code1;
+    item.articleName = article.name;
+
+    // Check for last used price for this client-article combination
+    let priceToUse = article.price1;
+    let priceTypeToUse: 'Price 1' | 'Price 2' | 'Price 3' | 'Custom' = 'Price 1';
+
+    if (selectedClient) {
+      const lastUsed = getLastUsedPrice(selectedClient, article.id);
+      if (lastUsed) {
+        priceToUse = lastUsed.lastPrice;
+        priceTypeToUse = lastUsed.priceType;
+      } else {
+        // Use default price 1
+        priceToUse = article.price1;
+        priceTypeToUse = 'Price 1';
+      }
+    } else {
+      priceToUse = article.price1;
+      priceTypeToUse = 'Price 1';
+    }
+
+    item.priceType = priceTypeToUse;
+    item.unitPrice = priceToUse;
+    item.total = priceToUse * item.quantity;
+    setItems(newItems);
+  };
+
+  const handleArticleSelectByName = (index: number, article: Article) => {
+    const newItems = [...items];
+    const item = newItems[index];
+    item.articleId = article.id;
+    item.articleCode = article.code1;
+    item.articleName = article.name;
+
+    // Check for last used price for this client-article combination
+    let priceToUse = article.price1;
+    let priceTypeToUse: 'Price 1' | 'Price 2' | 'Price 3' | 'Custom' = 'Price 1';
+
+    if (selectedClient) {
+      const lastUsed = getLastUsedPrice(selectedClient, article.id);
+      if (lastUsed) {
+        priceToUse = lastUsed.lastPrice;
+        priceTypeToUse = lastUsed.priceType;
+      } else {
+        priceToUse = article.price1;
+        priceTypeToUse = 'Price 1';
+      }
+    } else {
+      priceToUse = article.price1;
+      priceTypeToUse = 'Price 1';
+    }
+
+    item.priceType = priceTypeToUse;
+    item.unitPrice = priceToUse;
+    item.total = priceToUse * item.quantity;
+    setItems(newItems);
+  };
+
+  const handleArticleCodeChange = (index: number, value: string) => {
+    const newItems = [...items];
+    const item = newItems[index];
+    item.articleCode = value;
+    const article = articles.find((a) => a.code1 === value || a.code2 === value);
+    if (article) {
+      handleArticleSelectByCode(index, article);
+    } else {
+      if (!value) {
+        item.articleId = '';
+        item.articleName = '';
+      }
+    }
+    setItems(newItems);
+  };
+
+  const handleArticleNameChange = (index: number, value: string) => {
+    const newItems = [...items];
+    const item = newItems[index];
+    item.articleName = value;
+    const article = articles.find((a) => a.name.toLowerCase() === value.toLowerCase());
+    if (article) {
+      handleArticleSelectByName(index, article);
+    } else {
+      if (!value) {
+        item.articleId = '';
+        item.articleCode = '';
+      }
+    }
+    setItems(newItems);
+  };
+
   const handleItemChange = (index: number, field: keyof SaleItem, value: any) => {
     const newItems = [...items];
     const item = newItems[index];
 
-    if (field === 'articleCode') {
-      // Always update the articleCode field
-      item.articleCode = value;
-      // Try to find matching article
-      const article = articles.find(
-        (a) => a.code1 === value || a.name.toLowerCase() === value.toLowerCase()
-      );
-      if (article) {
-        item.articleId = article.id;
-        item.articleCode = article.code1;
-        item.articleName = article.name;
-        item.priceType = 'Price 1';
-        item.unitPrice = article.price1;
-        // Recalculate total
-        item.total = item.unitPrice * item.quantity;
-      } else {
-        // Clear article info if no match
-        item.articleId = '';
-        item.articleName = '';
-      }
-    } else if (field === 'priceType') {
+    if (field === 'priceType') {
       const article = articles.find((a) => a.id === item.articleId);
       if (article) {
         item.priceType = value;
@@ -82,6 +158,8 @@ export default function AddSale({ onClose, onBack }: AddSaleProps) {
             item.unitPrice = article.price1;
           }
         }
+        // Recalculate total when price type changes
+        item.total = item.unitPrice * item.quantity;
       }
     } else if (field === 'unitPrice') {
       const price = parseFloat(value) || 0;
@@ -99,19 +177,40 @@ export default function AddSale({ onClose, onBack }: AddSaleProps) {
           item.priceType = 'Custom';
         }
       }
+      // Recalculate total when price changes
+      item.total = item.unitPrice * item.quantity;
+    } else if (field === 'quantity') {
+      item.quantity = parseFloat(value) || 0;
+      // Recalculate total when quantity changes
+      item.total = item.unitPrice * item.quantity;
     } else {
       item[field] = value;
-    }
-
-    if (field === 'unitPrice' || field === 'quantity') {
-      const unitPrice = field === 'unitPrice' ? parseFloat(value) || 0 : item.unitPrice;
-      const quantity = field === 'quantity' ? parseFloat(value) || 0 : item.quantity;
-      item.total = unitPrice * quantity;
     }
 
     newItems[index] = item;
     setItems(newItems);
   };
+
+  // Update prices when client changes
+  useEffect(() => {
+    if (selectedClient && items.length > 0) {
+      const newItems = items.map((item) => {
+        if (item.articleId) {
+          const lastUsed = getLastUsedPrice(selectedClient, item.articleId);
+          if (lastUsed) {
+            return {
+              ...item,
+              priceType: lastUsed.priceType,
+              unitPrice: lastUsed.lastPrice,
+              total: lastUsed.lastPrice * item.quantity,
+            };
+          }
+        }
+        return item;
+      });
+      setItems(newItems);
+    }
+  }, [selectedClient]);
 
   const handleRemoveItem = (index: number) => {
     setItems(items.filter((_, i) => i !== index));
@@ -179,10 +278,21 @@ export default function AddSale({ onClose, onBack }: AddSaleProps) {
           currentStock: Math.max(0, article.currentStock - item.quantity),
         });
       }
+      // Update last used price
+      if (selectedClient) {
+        updateLastUsedPrice(selectedClient, item.articleId, item.unitPrice, item.priceType);
+      }
     });
 
     refreshAnalytics();
-    onClose();
+    
+    // Don't close modal, just reset form
+    setSelectedClient('');
+    setClientReference('');
+    setItems([]);
+    setNotPaid(false);
+    setPaidAmount('');
+    setErrors({});
   };
 
   const grandTotal = items.reduce((sum, item) => sum + item.total, 0);
@@ -203,6 +313,7 @@ export default function AddSale({ onClose, onBack }: AddSaleProps) {
               Add New
             </button>
             <button onClick={handleSave}>Save</button>
+            <button onClick={() => window.print()}>Print</button>
             <button onClick={onClose}>Cancel</button>
             <div className="add-sale-client">
               <label>Customer *</label>
@@ -259,54 +370,66 @@ export default function AddSale({ onClose, onBack }: AddSaleProps) {
                 </tr>
               </thead>
               <tbody>
-                {items.map((item, index) => (
-                  <tr key={index}>
-                    <td>
-                      <input
-                        type="text"
-                        value={item.articleCode}
-                        onChange={(e) => handleItemChange(index, 'articleCode', e.target.value)}
-                        placeholder="Code or name"
-                      />
-                      {errors[`item-${index}`] && (
-                        <span className="error-text">{errors[`item-${index}`]}</span>
-                      )}
-                    </td>
-                    <td>{item.articleName || '-'}</td>
-                    <td>
-                      <select
-                        value={item.priceType}
-                        onChange={(e) => handleItemChange(index, 'priceType', e.target.value)}
-                        disabled={!item.articleId}
-                      >
-                        {(() => {
-                          const article = articles.find((a) => a.id === item.articleId);
-                          if (!article) {
-                            return <option value="Price 1">Select article first</option>;
-                          }
-                          return (
-                            <>
-                              <option value="Price 1">Price 1 ({article.price1})</option>
-                              {article.price2 && <option value="Price 2">Price 2 ({article.price2})</option>}
-                              {article.price3 && <option value="Price 3">Price 3 ({article.price3})</option>}
-                              <option value="Custom">Custom</option>
-                            </>
-                          );
-                        })()}
-                      </select>
-                    </td>
-                    <td>
-                      <input
-                        type="number"
-                        step="0.01"
-                        value={item.unitPrice || ''}
-                        onChange={(e) => handleItemChange(index, 'unitPrice', e.target.value)}
-                        disabled={item.articleId !== '' && item.priceType !== 'Custom'}
-                      />
-                      {errors[`price-${index}`] && (
-                        <span className="error-text">{errors[`price-${index}`]}</span>
-                      )}
-                    </td>
+                {items.map((item, index) => {
+                  const article = articles.find((a) => a.id === item.articleId);
+                  return (
+                    <tr key={index}>
+                      <td>
+                        <ArticleSearchInput
+                          articles={articles}
+                          value={item.articleCode}
+                          onChange={(value) => handleArticleCodeChange(index, value)}
+                          onSelect={(article) => handleArticleSelectByCode(index, article)}
+                          placeholder="Enter code"
+                          searchBy="code"
+                        />
+                        {errors[`item-${index}`] && (
+                          <span className="error-text">{errors[`item-${index}`]}</span>
+                        )}
+                      </td>
+                      <td>
+                        <ArticleSearchInput
+                          articles={articles}
+                          value={item.articleName}
+                          onChange={(value) => handleArticleNameChange(index, value)}
+                          onSelect={(article) => handleArticleSelectByName(index, article)}
+                          placeholder="Enter name"
+                          searchBy="name"
+                        />
+                      </td>
+                      <td>
+                        <select
+                          value={item.priceType}
+                          onChange={(e) => handleItemChange(index, 'priceType', e.target.value)}
+                          disabled={!item.articleId}
+                        >
+                          {(() => {
+                            if (!article) {
+                              return <option value="Price 1">Select article first</option>;
+                            }
+                            return (
+                              <>
+                                <option value="Price 1">1</option>
+                                {article.price2 && <option value="Price 2">2</option>}
+                                {article.price3 && <option value="Price 3">3</option>}
+                                <option value="Custom">Custom</option>
+                              </>
+                            );
+                          })()}
+                        </select>
+                      </td>
+                      <td>
+                        <input
+                          type="number"
+                          step="0.01"
+                          value={item.unitPrice || ''}
+                          onChange={(e) => handleItemChange(index, 'unitPrice', e.target.value)}
+                          disabled={!item.articleId || item.priceType !== 'Custom'}
+                        />
+                        {errors[`price-${index}`] && (
+                          <span className="error-text">{errors[`price-${index}`]}</span>
+                        )}
+                      </td>
                     <td>
                       <input
                         type="number"

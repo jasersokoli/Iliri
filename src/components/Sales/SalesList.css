@@ -31,13 +31,19 @@
   font-size: 14px;
 }
 
-.sales-refresh {
-  padding: 8px 12px;
-  border: 1px solid var(--border-color);
+.sales-delete-selected {
+  padding: 8px 16px;
+  border: 1px solid var(--danger-color, #dc3545);
   border-radius: 6px;
-  background: var(--bg-secondary);
+  background: var(--danger-color, #dc3545);
+  color: white;
   cursor: pointer;
-  font-size: 16px;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.sales-delete-selected:hover {
+  background: var(--danger-color-dark, #c82333);
 }
 
 .sales-table-container {
