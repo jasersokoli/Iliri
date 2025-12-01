@@ -446,7 +446,8 @@ export default function AddSale({ onClose, onBack }: AddSaleProps) {
                       <button onClick={() => handleRemoveItem(index)}>Remove</button>
                     </td>
                   </tr>
-                ))}
+                  );
+                })}
               </tbody>
             </table>
             <div className="add-sale-actions">
