@@ -195,10 +195,31 @@ export default function AddArticle({ articleId, onClose, onBack }: AddArticlePro
           <button
             className="add-article-btn"
             onClick={() => {
-              setMode('edit');
-              setIsDirty(true);
+              if (existingArticle) {
+                // Modify existing article
+                setMode('edit');
+                setIsDirty(true);
+              } else {
+                // Reset all fields for new article
+                setFormData({
+                  name: '',
+                  code1: '',
+                  cost: 0,
+                  currentStock: 0,
+                  minimumStock: undefined,
+                  price1: 0,
+                  price2: undefined,
+                  price3: undefined,
+                  supplierId: '',
+                  unit: 'pcs',
+                  active: true,
+                });
+                setMode('edit');
+                setIsDirty(false);
+                setErrors({});
+              }
             }}
-            disabled={mode === 'edit'}
+            disabled={mode === 'edit' && !existingArticle}
           >
             {existingArticle ? 'Modify' : 'Add New'}
           </button>
