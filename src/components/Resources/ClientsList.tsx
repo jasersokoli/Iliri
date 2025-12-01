@@ -107,7 +107,6 @@ export default function ClientsList({ onClose, onSelectClient }: ClientsListProp
             <table className="clients-table">
               <thead>
                 <tr>
-                  <th>Code</th>
                   <th>Name</th>
                   <th>Telephone</th>
                   <th>Active</th>
@@ -116,7 +115,7 @@ export default function ClientsList({ onClose, onSelectClient }: ClientsListProp
               <tbody>
                 {filteredClients.length === 0 ? (
                   <tr>
-                    <td colSpan={4} className="clients-empty">
+                    <td colSpan={3} className="clients-empty">
                       No clients found
                     </td>
                   </tr>
@@ -131,7 +130,6 @@ export default function ClientsList({ onClose, onSelectClient }: ClientsListProp
                         onSelectClient(client.id);
                       }}
                     >
-                      <td>{client.code}</td>
                       <td>{client.name}</td>
                       <td>{client.telephone || '-'}</td>
                       <td>{client.active ? '✓' : '✗'}</td>

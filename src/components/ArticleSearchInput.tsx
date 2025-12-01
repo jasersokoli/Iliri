@@ -84,12 +84,37 @@ export default function ArticleSearchInput({
     }
   };
 
-  const handleBlur = () => {
+  const handleBlur = (e: React.FocusEvent) => {
+    // Check if the focus is moving to a suggestion element
+    const relatedTarget = e.relatedTarget as HTMLElement;
+    if (relatedTarget && suggestionsRef.current?.contains(relatedTarget)) {
+      return; // Don't close if clicking on a suggestion
+    }
     // Delay to allow click on suggestion
     setTimeout(() => {
       setShowSuggestions(false);
     }, 200);
   };
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        suggestionsRef.current &&
+        !suggestionsRef.current.contains(event.target as Node) &&
+        inputRef.current &&
+        !inputRef.current.contains(event.target as Node)
+      ) {
+        setShowSuggestions(false);
+      }
+    };
+
+    if (showSuggestions) {
+      document.addEventListener('mousedown', handleClickOutside);
+      return () => {
+        document.removeEventListener('mousedown', handleClickOutside);
+      };
+    }
+  }, [showSuggestions]);
 
   return (
     <div className={`article-search-input ${className}`}>

@@ -286,12 +286,8 @@ export default function AddSale({ onClose, onBack }: AddSaleProps) {
 
     refreshAnalytics();
     
-    // Don't close modal, just reset form
-    setSelectedClient('');
-    setClientReference('');
-    setItems([]);
-    setNotPaid(false);
-    setPaidAmount('');
+    // Don't close modal or clear fields - user wants to print invoice
+    // Just clear errors
     setErrors({});
   };
 

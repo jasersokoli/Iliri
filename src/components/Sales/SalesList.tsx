@@ -130,7 +130,6 @@ export default function SalesList({ onClose }: SalesListProps) {
                   <th>Username</th>
                   <th>Date</th>
                   <th>Time</th>
-                  <th>Price Type</th>
                   <th>Unit Price</th>
                   <th>Total</th>
                   <th>Paid</th>
@@ -139,7 +138,7 @@ export default function SalesList({ onClose }: SalesListProps) {
               <tbody>
                 {filteredSales.length === 0 ? (
                   <tr>
-                    <td colSpan={11} className="sales-empty">
+                    <td colSpan={10} className="sales-empty">
                       No sales found
                     </td>
                   </tr>
@@ -175,15 +174,15 @@ export default function SalesList({ onClose }: SalesListProps) {
                       <td>{sale.username}</td>
                       <td>{format(sale.date, 'dd/MM/yyyy')}</td>
                       <td>{format(sale.date, 'HH:mm:ss')}</td>
-                      <td>{sale.priceType === 'Price 1' ? '1' : sale.priceType === 'Price 2' ? '2' : sale.priceType === 'Price 3' ? '3' : 'Custom'}</td>
                       <td>${sale.unitPrice.toFixed(2)}</td>
                       <td>${sale.total.toFixed(2)}</td>
                       <td>
                         {(() => {
                           const payments = getPaymentsBySaleId(sale.id);
                           const totalPaid = payments.reduce((sum, p) => sum + p.amount, 0);
-                          const displayPaid = totalPaid > 0 ? totalPaid : (sale.paidAmount || 0);
-                          const isFullyPaid = displayPaid >= sale.total;
+                          // Use the most up-to-date paid amount from the sale object (updated by addPayment)
+                          const displayPaid = sale.paidAmount !== undefined ? sale.paidAmount : totalPaid;
+                          const isFullyPaid = sale.paid || (displayPaid >= sale.total);
                           
                           return isFullyPaid ? (
                             <span>✓ Paid</span>

@@ -125,7 +125,6 @@ export default function ArticlesList({ onClose, onSelectArticle }: ArticlesListP
             <table className="articles-table">
               <thead>
                 <tr>
-                  <th style={{ width: '120px' }}>Code</th>
                   <th style={{ width: '200px' }}>Article</th>
                   <th style={{ width: '120px' }}>Current Stock</th>
                   <th style={{ width: '120px' }}>Minimum Stock</th>
@@ -138,7 +137,7 @@ export default function ArticlesList({ onClose, onSelectArticle }: ArticlesListP
               <tbody>
                 {filteredArticles.length === 0 ? (
                   <tr>
-                    <td colSpan={8} className="articles-empty">
+                    <td colSpan={7} className="articles-empty">
                       No articles found
                     </td>
                   </tr>
@@ -153,7 +152,6 @@ export default function ArticlesList({ onClose, onSelectArticle }: ArticlesListP
                         onSelectArticle(article.id);
                       }}
                     >
-                      <td>{article.code1}</td>
                       <td>{article.name}</td>
                       <td
                         onDoubleClick={(e) => {

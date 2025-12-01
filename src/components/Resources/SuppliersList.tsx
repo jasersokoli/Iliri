@@ -91,7 +91,6 @@ export default function SuppliersList({ onClose, onSelectSupplier }: SuppliersLi
             <table className="suppliers-table">
               <thead>
                 <tr>
-                  <th>Code</th>
                   <th>Name</th>
                   <th>Telephone</th>
                   <th>Active</th>
@@ -100,7 +99,7 @@ export default function SuppliersList({ onClose, onSelectSupplier }: SuppliersLi
               <tbody>
                 {filteredSuppliers.length === 0 ? (
                   <tr>
-                    <td colSpan={4} className="suppliers-empty">
+                    <td colSpan={3} className="suppliers-empty">
                       No suppliers found
                     </td>
                   </tr>
@@ -115,7 +114,6 @@ export default function SuppliersList({ onClose, onSelectSupplier }: SuppliersLi
                         onSelectSupplier(supplier.id);
                       }}
                     >
-                      <td>{supplier.code}</td>
                       <td>{supplier.name}</td>
                       <td>{supplier.telephone || '-'}</td>
                       <td>{supplier.active ? '✓' : '✗'}</td>

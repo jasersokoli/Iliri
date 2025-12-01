@@ -56,6 +56,13 @@
 .sales-table {
   width: 100%;
   border-collapse: collapse;
+  table-layout: auto;
+}
+
+.sales-table th,
+.sales-table td {
+  white-space: nowrap;
+  min-width: 80px;
 }
 
 .sales-table th {

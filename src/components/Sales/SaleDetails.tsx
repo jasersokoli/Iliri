@@ -16,10 +16,8 @@ export default function SaleDetails({ saleId, onClose }: SaleDetailsProps) {
   const [showPaymentInput, setShowPaymentInput] = useState(false);
 
   const payments = sale ? getPaymentsBySaleId(sale.id) : [];
-  // Calculate total paid from payments
-  const totalPaidFromPayments = payments.reduce((sum, p) => sum + p.amount, 0);
-  // Use payments total or sale.paidAmount, whichever is more accurate
-  const displayPaidAmount = totalPaidFromPayments > 0 ? totalPaidFromPayments : (sale.paidAmount || 0);
+  // Use the sale's paidAmount (updated by addPayment) or calculate from payments
+  const displayPaidAmount = sale?.paidAmount !== undefined ? sale.paidAmount : payments.reduce((sum, p) => sum + p.amount, 0);
 
   if (!sale) {
     return null;
@@ -37,6 +35,7 @@ export default function SaleDetails({ saleId, onClose }: SaleDetailsProps) {
       });
       setPaymentAmount('');
       setShowPaymentInput(false);
+      // Force a re-render by updating the sale (addPayment already updates it, but this ensures UI refresh)
     }
   };
 
@@ -65,7 +64,7 @@ export default function SaleDetails({ saleId, onClose }: SaleDetailsProps) {
             <div><strong>Date:</strong> {format(sale.date, 'dd/MM/yyyy')}</div>
             <div><strong>Created by:</strong> {sale.username}</div>
             <div><strong>Total:</strong> ${sale.total.toFixed(2)}</div>
-            <div><strong>Paid:</strong> {sale.paid ? 'Yes' : `$${displayPaidAmount.toFixed(2)} / $${sale.total.toFixed(2)}`}</div>
+            <div><strong>Paid:</strong> {(sale.paid || displayPaidAmount >= sale.total) ? 'Yes' : `$${displayPaidAmount.toFixed(2)} / $${sale.total.toFixed(2)}`}</div>
           </div>
         </div>
 
@@ -116,24 +115,22 @@ export default function SaleDetails({ saleId, onClose }: SaleDetailsProps) {
 
         <div className="sale-details-table-container">
           <table className="sale-details-table">
-            <thead>
-              <tr>
-                <th>#</th>
-                <th>Article Code</th>
-                <th>Article Name</th>
-                <th>Price Type</th>
-                <th>Unit Price</th>
-                <th>Quantity</th>
-                <th>Total</th>
-              </tr>
-            </thead>
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Article Code</th>
+                  <th>Article Name</th>
+                  <th>Unit Price</th>
+                  <th>Quantity</th>
+                  <th>Total</th>
+                </tr>
+              </thead>
             <tbody>
               {sale.items.map((item, index) => (
                 <tr key={index}>
                   <td>{index + 1}</td>
                   <td>{item.articleCode}</td>
                   <td>{item.articleName}</td>
-                  <td>{item.priceType === 'Price 1' ? '1' : item.priceType === 'Price 2' ? '2' : item.priceType === 'Price 3' ? '3' : 'Custom'}</td>
                   <td>${item.unitPrice.toFixed(2)}</td>
                   <td>{item.quantity}</td>
                   <td>${item.total.toFixed(2)}</td>
