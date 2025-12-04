@@ -42,3 +42,26 @@
   border-bottom: 1px solid var(--border-color);
 }
 
+.purchase-details-print-btn {
+    padding: 8px 16px;
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: background-color 0.2s;
+}
+.purchase-details-print-btn:hover {
+    background-color: var(--primary-hover);
+}
+
+@media print {
+    .purchase-details-print-btn {
+        display: none;
+    }
+}

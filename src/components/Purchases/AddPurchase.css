@@ -121,3 +121,22 @@
   display: block;
 }
 
+.purchase-action-btn {
+  padding: 8px 16px;
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  background: var(--bg-tertiary);
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 400;     /* match other toolbar buttons */
+  line-height: 1;       /* fix height difference */
+  height: 36px;         /* enforce exact height */
+  display: flex;
+  align-items: center;  /* vertically center text */
+  transition: all 0.2s ease;
+}
+
+.purchase-action-btn:hover {
+  background-color: #f1f5ff;
+}
+

@@ -21,6 +21,12 @@ export default function PurchaseDetails({ purchaseId, onClose }: PurchaseDetails
     <Modal isOpen={true} onClose={onClose} size="medium" title="Purchase Details">
       <div className="purchase-details">
         <div className="purchase-details-header">
+          <button
+              className="purchase-details-print-btn"
+              onClick={() => window.print()}
+          >
+              🖨️ Print
+          </button>
           <div className="purchase-details-info">
             <div><strong>Supplier:</strong> {purchase.supplierName}</div>
             <div><strong>Date:</strong> {format(purchase.date, 'dd/MM/yyyy')}</div>
