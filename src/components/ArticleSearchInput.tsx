@@ -27,6 +27,7 @@ export default function ArticleSearchInput({
   const [suggestions, setSuggestions] = useState<Article[]>([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
   const [selectedIndex, setSelectedIndex] = useState(-1);
+  const isSelectingRef = useRef(false);
   const inputRef = useRef<HTMLInputElement>(null);
   const suggestionsRef = useRef<HTMLDivElement>(null);
 
@@ -34,7 +35,28 @@ export default function ArticleSearchInput({
   const activeArticles = articles.filter((a) => a.active && !a.deleted);
 
   useEffect(() => {
+    // Don't show suggestions if we're in the middle of selecting
+    if (isSelectingRef.current) {
+      return;
+    }
+
     if (!value.trim()) {
+      setSuggestions([]);
+      setShowSuggestions(false);
+      return;
+    }
+
+    // Check if value exactly matches an article (likely from a selection)
+    const exactMatch = activeArticles.find((article) => {
+      if (searchBy === 'code') {
+        return article.code1 === value || article.code2 === value;
+      } else {
+        return article.name === value;
+      }
+    });
+
+    // If there's an exact match, don't show suggestions (article is already selected)
+    if (exactMatch) {
       setSuggestions([]);
       setShowSuggestions(false);
       return;
@@ -62,9 +84,24 @@ export default function ArticleSearchInput({
   };
 
   const handleSelect = (article: Article) => {
-    onSelect(article);
+    // Set flag immediately to prevent useEffect from showing suggestions
+    isSelectingRef.current = true;
     setShowSuggestions(false);
     setSelectedIndex(-1);
+    setSuggestions([]);
+    
+    // Update the input value immediately based on searchBy
+    const newValue = searchBy === 'code' ? article.code1 : article.name;
+    onChange(newValue);
+    
+    // Call onSelect - this may update the value in parent, but we'll keep flag true
+    onSelect(article);
+    
+    // Keep the flag true for a bit longer to prevent suggestions from reappearing
+    // when parent updates the value
+    setTimeout(() => {
+      isSelectingRef.current = false;
+    }, 300);
   };
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
@@ -93,7 +130,9 @@ export default function ArticleSearchInput({
     }
     // Delay to allow click on suggestion
     setTimeout(() => {
-      setShowSuggestions(false);
+      if (!isSelectingRef.current) {
+        setShowSuggestions(false);
+      }
     }, 200);
   };
 
@@ -137,11 +176,17 @@ export default function ArticleSearchInput({
             <div
               key={article.id}
               className={`article-search-suggestion ${index === selectedIndex ? 'selected' : ''}`}
-              onClick={() => handleSelect(article)}
+              onMouseDown={(e) => {
+                e.preventDefault(); // Prevent input blur before click
+                handleSelect(article);
+              }}
               onMouseEnter={() => setSelectedIndex(index)}
             >
-              <div className="article-suggestion-code">{article.code1}</div>
-              <div className="article-suggestion-name">{article.name}</div>
+              {searchBy === 'code' ? (
+                <div className="article-suggestion-code">{article.code1}</div>
+              ) : (
+                <div className="article-suggestion-name">{article.name}</div>
+              )}
             </div>
           ))}
         </div>

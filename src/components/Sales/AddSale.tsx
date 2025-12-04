@@ -16,7 +16,7 @@ interface AddSaleProps {
 }
 
 export default function AddSale({ onClose, onBack }: AddSaleProps) {
-  const { articles, clients, sales, addSale, updateArticle, refreshAnalytics, getLastUsedPrice, updateLastUsedPrice } = useDataStore();
+  const { articles, clients, sales, addSale, addPayment, updateArticle, refreshAnalytics, getLastUsedPrice, updateLastUsedPrice } = useDataStore();
   const { user } = useAuthStore();
   const [selectedClient, setSelectedClient] = useState<string>('');
   const [clientReference, setClientReference] = useState<string>('');
@@ -273,13 +273,24 @@ export default function AddSale({ onClose, onBack }: AddSaleProps) {
       unitPrice,
       total,
       paid: isFullyPaid,
-      paidAmount: paidAmt > 0 ? paidAmt : undefined,
+      paidAmount: undefined, // Will be updated by addPayment if there's a payment
       items: items.map((item) => ({ ...item })),
     };
 
     // DISABLE THE SAVE BUTTON AFTER FIRST SUCCESSFUL SAVE
     setHasSavedOnce(true);
     addSale(sale);
+
+    // If there's a payment (partial or full), create a payment record
+    // This will update the sale's paidAmount and paid status correctly
+    if (paidAmt > 0) {
+      addPayment({
+        id: `payment-${Date.now()}`,
+        saleId: sale.id,
+        amount: paidAmt,
+        timestamp: saleDate,
+      });
+    }
 
     // Update article stocks
     items.forEach((item) => {
