@@ -27,6 +27,8 @@ export default function AddSale({ onClose, onBack }: AddSaleProps) {
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [showAddArticle, setShowAddArticle] = useState(false);
   const [showAddClient, setShowAddClient] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
+  const [hasSavedOnce, setHasSavedOnce] = useState(false);
 
   const handleAddItem = () => {
     setItems([
@@ -218,6 +220,9 @@ export default function AddSale({ onClose, onBack }: AddSaleProps) {
   };
 
   const handleSave = () => {
+    if (isSaving) return;
+    setIsSaving(true);
+
     const newErrors: Record<string, string> = {};
 
     if (!selectedClient) {
@@ -241,7 +246,10 @@ export default function AddSale({ onClose, onBack }: AddSaleProps) {
     });
 
     setErrors(newErrors);
-    if (Object.keys(newErrors).length > 0) return;
+    if (Object.keys(newErrors).length > 0) {
+      setIsSaving(false);
+      return;
+    }
 
     const total = items.reduce((sum, item) => sum + item.total, 0);
     const saleNumber = sales.length > 0 ? Math.max(...sales.map((s) => s.number)) + 1 : 1;
@@ -271,6 +279,9 @@ export default function AddSale({ onClose, onBack }: AddSaleProps) {
 
     addSale(sale);
 
+    // DISABLE THE SAVE BUTTON AFTER FIRST SUCCESSFUL SAVE
+    setHasSavedOnce(true);
+
     // Update article stocks
     items.forEach((item) => {
       const article = articles.find((a) => a.id === item.articleId);
@@ -279,7 +290,6 @@ export default function AddSale({ onClose, onBack }: AddSaleProps) {
           currentStock: Math.max(0, article.currentStock - item.quantity),
         });
       }
-      // Update last used price
       if (selectedClient) {
         updateLastUsedPrice(selectedClient, item.articleId, item.unitPrice, item.priceType);
       }
@@ -290,6 +300,7 @@ export default function AddSale({ onClose, onBack }: AddSaleProps) {
     // Don't close modal or clear fields - user wants to print invoice
     // Just clear errors
     setErrors({});
+    setIsSaving(false);
   };
 
   const grandTotal = items.reduce((sum, item) => sum + item.total, 0);
@@ -308,10 +319,17 @@ export default function AddSale({ onClose, onBack }: AddSaleProps) {
               setErrors({});
               setNotPaid(false);
               setPaidAmount('');
+              setHasSavedOnce(false);
             }}>
               Add New
             </button>
-            <button className="print-hide save-btn" onClick={handleSave}>Save</button>
+            <button
+              className="print-hide save-btn"
+              onClick={handleSave}
+              disabled={isSaving || hasSavedOnce}
+            >
+              {isSaving ? 'Saving...' : 'Save'}
+            </button>
             <button className="print-hide print-btn" onClick={() => window.print()}>Print</button>
             <button className="print-hide cancel-btn" onClick={onClose}>Cancel</button>
             <div className="add-sale-client">
@@ -334,8 +352,12 @@ export default function AddSale({ onClose, onBack }: AddSaleProps) {
                     </option>
                   ))}
                 </select>
-                <button className="print-hide add-customer-btn" type="button" onClick={() => setShowAddClient(true)}>
-                  Add Customer
+                <button
+                    type="button"
+                    className="purchase-action-btn print-hide"
+                    onClick={() => setShowAddClient(true)}
+                >
+                    Add Customer
                 </button>
               </div>
               {errors.client && <span className="error-text">{errors.client}</span>}

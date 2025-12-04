@@ -211,8 +211,12 @@ export default function AddPurchase({ onClose, onBack }: AddPurchaseProps) {
                     </option>
                   ))}
                 </select>
-                <button type="button" onClick={() => setShowAddSupplier(true)}>
-                  Add Supplier
+                <button
+                    type="button"
+                    className="purchase-action-btn"
+                    onClick={() => setShowAddSupplier(true)}
+                >
+                    Add Supplier
                 </button>
               </div>
               {errors.supplier && <span className="error-text">{errors.supplier}</span>}
