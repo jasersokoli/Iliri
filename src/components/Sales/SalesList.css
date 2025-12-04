@@ -109,3 +109,33 @@
   color: var(--text-secondary);
 }
 
+/* PRINT SIZE FIX - MAKES SALES MODAL SMALLER */
+@media print {
+
+  /* shrink overall scale */
+  body {
+    zoom: 0.85;
+  }
+
+  /* Ensure modal takes full page width */
+  .modal-content {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    box-shadow: none !important;
+  }
+
+  /* Reduce table font size */
+  .sales-table,
+  .sales-table th,
+  .sales-table td {
+    font-size: 12px !important;
+  }
+
+  /* Remove page margins for more space */
+  @page {
+    margin: 10mm;
+  }
+}
+

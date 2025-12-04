@@ -277,10 +277,9 @@ export default function AddSale({ onClose, onBack }: AddSaleProps) {
       items: items.map((item) => ({ ...item })),
     };
 
-    addSale(sale);
-
     // DISABLE THE SAVE BUTTON AFTER FIRST SUCCESSFUL SAVE
     setHasSavedOnce(true);
+    addSale(sale);
 
     // Update article stocks
     items.forEach((item) => {
