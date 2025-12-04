@@ -3,6 +3,7 @@ import { useDataStore } from '../../store/dataStore';
 import Modal from '../Modal';
 import AddClient from './AddClient';
 import './ClientsList.css';
+import React from 'react';
 
 interface ClientsListProps {
   onClose: () => void;

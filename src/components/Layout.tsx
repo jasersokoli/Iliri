@@ -2,6 +2,7 @@ import { Outlet } from 'react-router-dom';
 import Sidebar from './Sidebar';
 import TopBar from './TopBar';
 import './Layout.css';
+import React from 'react';
 
 export default function Layout() {
   return (

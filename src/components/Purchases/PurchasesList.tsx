@@ -4,6 +4,7 @@ import { format } from 'date-fns';
 import Modal from '../Modal';
 import PurchaseDetails from './PurchaseDetails';
 import './PurchasesList.css';
+import React from 'react';
 
 interface PurchasesListProps {
   onClose: () => void;
@@ -46,6 +47,9 @@ export default function PurchasesList({ onClose }: PurchasesListProps) {
   return (
     <>
       <Modal isOpen={true} onClose={onClose} size="large" title="List of Purchases">
+
+        <div className="purchases-list"></div>
+
         <div className="purchases-list">
           <div className="purchases-list-header">
             <select
@@ -90,6 +94,7 @@ export default function PurchasesList({ onClose }: PurchasesListProps) {
                   <th>Supplier</th>
                   <th>Username</th>
                   <th>Date</th>
+                  <th>Time</th>
                   <th>Total</th>
                 </tr>
               </thead>
@@ -115,6 +120,7 @@ export default function PurchasesList({ onClose }: PurchasesListProps) {
                       <td>{purchase.supplierName}</td>
                       <td>{purchase.username}</td>
                       <td>{format(purchase.date, 'dd/MM/yyyy')}</td>
+                      <td>{format(purchase.date, 'HH:mm:ss')}</td>
                       <td>${purchase.total.toFixed(2)}</td>
                     </tr>
                   ))

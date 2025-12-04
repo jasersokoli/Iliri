@@ -2,6 +2,7 @@ import { useDataStore } from '../../store/dataStore';
 import { format } from 'date-fns';
 import Modal from '../Modal';
 import './PurchaseDetails.css';
+import React from 'react';
 
 interface PurchaseDetailsProps {
   purchaseId: string;

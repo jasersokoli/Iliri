@@ -8,6 +8,7 @@ import Sales from './pages/Sales';
 import Profile from './pages/Profile';
 import Layout from './components/Layout';
 import { useEffect } from 'react';
+import React from 'react';
 
 function PrivateRoute({ children }: { children: React.ReactNode }) {
   const { user } = useAuthStore();

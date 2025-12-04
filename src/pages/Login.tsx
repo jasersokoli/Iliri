@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuthStore } from '../store/authStore';
 import './Login.css';
+import React from 'react';
 
 export default function Login() {
   const [name, setName] = useState('');

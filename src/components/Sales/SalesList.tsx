@@ -4,6 +4,7 @@ import { format } from 'date-fns';
 import Modal from '../Modal';
 import SaleDetails from './SaleDetails';
 import './SalesList.css';
+import React from 'react';
 
 interface SalesListProps {
   onClose: () => void;

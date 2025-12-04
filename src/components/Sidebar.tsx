@@ -1,5 +1,6 @@
 import { NavLink, useLocation } from 'react-router-dom';
 import './Sidebar.css';
+import React from 'react';
 
 const menuItems = [
   { path: '/dashboard', label: 'Dashboard', icon: '📊' },

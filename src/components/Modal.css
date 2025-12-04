@@ -52,6 +52,24 @@
   margin: 0;
 }
 
+/* Hide on screen */
+.print-only {
+  display: none;
+}
+
+/* Show only in print */
+@media print {
+  .print-only {
+    display: block !important;
+    font-size: 30px !important;
+    font-weight: 500 !important;
+    text-align: center !important;
+    margin-bottom: 20px !important;
+    margin-top: 0 !important;
+  }
+}
+
+
 .modal-close {
   width: 32px;
   height: 32px;

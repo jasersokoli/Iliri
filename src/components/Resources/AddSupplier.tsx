@@ -3,6 +3,7 @@ import { useDataStore } from '../../store/dataStore';
 import type { Supplier } from '../../types';
 import Modal from '../Modal';
 import './AddSupplier.css';
+import React from 'react';
 
 interface AddSupplierProps {
   supplierId: string | null;

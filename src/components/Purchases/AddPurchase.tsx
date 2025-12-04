@@ -8,6 +8,7 @@ import AddArticle from '../Resources/AddArticle';
 import AddSupplier from '../Resources/AddSupplier';
 import ArticleSearchInput from '../ArticleSearchInput';
 import './AddPurchase.css';
+import React from 'react';
 
 interface AddPurchaseProps {
   onClose: () => void;
@@ -226,8 +227,8 @@ export default function AddPurchase({ onClose, onBack }: AddPurchaseProps) {
             <table className="add-purchase-table">
               <thead>
                 <tr>
-                  <th>Article Code</th>
                   <th>Article Name</th>
+                  <th>Article Code</th>
                   <th>Unit Cost</th>
                   <th>Quantity</th>
                   <th>Total</th>
@@ -240,6 +241,16 @@ export default function AddPurchase({ onClose, onBack }: AddPurchaseProps) {
                     <td>
                       <ArticleSearchInput
                         articles={articles}
+                        value={item.articleName}
+                        onChange={(value) => handleArticleNameChange(index, value)}
+                        onSelect={(article) => handleArticleSelectByName(index, article)}
+                        placeholder="Enter name"
+                        searchBy="name"
+                      />
+                    </td>
+                    <td>
+                      <ArticleSearchInput
+                        articles={articles}
                         value={item.articleCode}
                         onChange={(value) => handleArticleCodeChange(index, value)}
                         onSelect={(article) => handleArticleSelectByCode(index, article)}
@@ -249,16 +260,6 @@ export default function AddPurchase({ onClose, onBack }: AddPurchaseProps) {
                       {errors[`item-${index}`] && (
                         <span className="error-text">{errors[`item-${index}`]}</span>
                       )}
-                    </td>
-                    <td>
-                      <ArticleSearchInput
-                        articles={articles}
-                        value={item.articleName}
-                        onChange={(value) => handleArticleNameChange(index, value)}
-                        onSelect={(article) => handleArticleSelectByName(index, article)}
-                        placeholder="Enter name"
-                        searchBy="name"
-                      />
                     </td>
                     <td>
                       <input

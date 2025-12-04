@@ -3,6 +3,7 @@ import { useDataStore } from '../../store/dataStore';
 import type { Client } from '../../types';
 import Modal from '../Modal';
 import './AddClient.css';
+import React from 'react';
 
 interface AddClientProps {
   clientId: string | null;
