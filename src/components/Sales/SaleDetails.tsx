@@ -46,7 +46,7 @@ export default function SaleDetails({ saleId, onClose }: SaleDetailsProps) {
         <div className="sale-details-header">
           <div className="sale-details-actions">
             <button onClick={() => window.print()} className="sale-details-print-btn">
-              Print
+              🖨️ Print
             </button>
             {!sale.paid && (
               <button

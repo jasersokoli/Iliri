@@ -23,11 +23,13 @@
   background: var(--bg-tertiary);
   cursor: pointer;
   font-size: 14px;
+  background: var(--primary-color);
+  color: white;
 }
 
 .sale-details-print-btn:hover,
 .sale-details-payment-btn:hover {
-  background: var(--bg-secondary);
+  background-color: var(--primary-hover);
 }
 
 .sale-details-payment-btn {
