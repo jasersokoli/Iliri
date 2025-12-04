@@ -2,6 +2,7 @@ import { useState } from 'react';
 import PurchasesList from '../components/Purchases/PurchasesList';
 import AddPurchase from '../components/Purchases/AddPurchase';
 import './Purchases.css';
+import React from 'react';
 
 type PurchaseView = 'menu' | 'list' | 'add';
 

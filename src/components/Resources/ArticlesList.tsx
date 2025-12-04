@@ -3,6 +3,7 @@ import { useDataStore } from '../../store/dataStore';
 import Modal from '../Modal';
 import AddArticle from './AddArticle';
 import './ArticlesList.css';
+import React from 'react';
 
 interface ArticlesListProps {
   onClose: () => void;

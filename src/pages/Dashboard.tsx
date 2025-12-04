@@ -3,6 +3,7 @@ import { useDataStore } from '../store/dataStore';
 import { LineChart, Line, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import Modal from '../components/Modal';
 import './Dashboard.css';
+import React from 'react';
 
 export default function Dashboard() {
   const {

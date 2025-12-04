@@ -2,6 +2,7 @@ import { useState } from 'react';
 import SalesList from '../components/Sales/SalesList';
 import AddSale from '../components/Sales/AddSale';
 import './Sales.css';
+import React from 'react';
 
 type SalesView = 'menu' | 'list' | 'add';
 

@@ -3,6 +3,7 @@ import { useDataStore } from '../../store/dataStore';
 import type { Article } from '../../types';
 import Modal from '../Modal';
 import './AddArticle.css';
+import React from 'react';
 
 interface AddArticleProps {
   articleId: string | null;
@@ -249,18 +250,6 @@ export default function AddArticle({ articleId, onClose, onBack }: AddArticlePro
         <div className="add-article-form">
           <div className="add-article-row">
             <div className="add-article-field">
-              <label className="add-article-label">Article Code *</label>
-              <input
-                type="text"
-                value={formData.code1 || ''}
-                onChange={(e) => handleChange('code1', e.target.value)}
-                disabled={mode === 'view'}
-                className={`add-article-input ${errors.code1 ? 'error' : ''}`}
-              />
-              {errors.code1 && <span className="add-article-error">{errors.code1}</span>}
-            </div>
-
-            <div className="add-article-field">
               <label className="add-article-label">Name of Article *</label>
               <input
                 type="text"
@@ -270,6 +259,18 @@ export default function AddArticle({ articleId, onClose, onBack }: AddArticlePro
                 className={`add-article-input ${errors.name ? 'error' : ''}`}
               />
               {errors.name && <span className="add-article-error">{errors.name}</span>}
+            </div>
+
+            <div className="add-article-field">
+              <label className="add-article-label">Article Code *</label>
+              <input
+                type="text"
+                value={formData.code1 || ''}
+                onChange={(e) => handleChange('code1', e.target.value)}
+                disabled={mode === 'view'}
+                className={`add-article-input ${errors.code1 ? 'error' : ''}`}
+              />
+              {errors.code1 && <span className="add-article-error">{errors.code1}</span>}
             </div>
           </div>
 

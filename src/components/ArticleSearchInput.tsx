@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import type { Article } from '../types';
 import './ArticleSearchInput.css';
+import React from 'react';
 
 interface ArticleSearchInputProps {
   articles: Article[];

@@ -8,6 +8,7 @@ import AddArticle from '../Resources/AddArticle';
 import AddClient from '../Resources/AddClient';
 import ArticleSearchInput from '../ArticleSearchInput';
 import './AddSale.css';
+import React from 'react';
 
 interface AddSaleProps {
   onClose: () => void;
@@ -298,7 +299,9 @@ export default function AddSale({ onClose, onBack }: AddSaleProps) {
       <Modal isOpen={true} onClose={onClose} size="large" title="Add New Sale">
         <div className="add-sale">
           <div className="add-sale-toolbar">
-            <button onClick={() => {
+            <button 
+              className="print-hide add-new-btn"
+              onClick={() => {
               setSelectedClient('');
               setClientReference('');
               setItems([]);
@@ -308,9 +311,9 @@ export default function AddSale({ onClose, onBack }: AddSaleProps) {
             }}>
               Add New
             </button>
-            <button onClick={handleSave}>Save</button>
-            <button onClick={() => window.print()}>Print</button>
-            <button onClick={onClose}>Cancel</button>
+            <button className="print-hide save-btn" onClick={handleSave}>Save</button>
+            <button className="print-hide print-btn" onClick={() => window.print()}>Print</button>
+            <button className="print-hide cancel-btn" onClick={onClose}>Cancel</button>
             <div className="add-sale-client">
               <label>Customer *</label>
               <div className="client-select-container">
@@ -331,7 +334,7 @@ export default function AddSale({ onClose, onBack }: AddSaleProps) {
                     </option>
                   ))}
                 </select>
-                <button type="button" onClick={() => setShowAddClient(true)}>
+                <button className="print-hide add-customer-btn" type="button" onClick={() => setShowAddClient(true)}>
                   Add Customer
                 </button>
               </div>
@@ -350,15 +353,19 @@ export default function AddSale({ onClose, onBack }: AddSaleProps) {
               <label>Date</label>
               <div>{format(saleDate, 'dd/MM/yyyy')}</div>
             </div>
+            <div className="add-sale-date">
+              <label>Time</label>
+              <div>{format(saleDate, 'HH:mm:ss')}</div>
+            </div>
           </div>
 
           <div className="add-sale-items">
             <table className="add-sale-table">
               <thead>
                 <tr>
-                  <th>Article Code</th>
                   <th>Article Name</th>
-                  <th>Price Type</th>
+                  <th>Article Code</th>
+                  <th id="add-sale-price-type-header">Price Type</th>
                   <th>Unit Price</th>
                   <th>Quantity</th>
                   <th>Total</th>
@@ -373,6 +380,16 @@ export default function AddSale({ onClose, onBack }: AddSaleProps) {
                       <td>
                         <ArticleSearchInput
                           articles={articles}
+                          value={item.articleName}
+                          onChange={(value) => handleArticleNameChange(index, value)}
+                          onSelect={(article) => handleArticleSelectByName(index, article)}
+                          placeholder="Enter name"
+                          searchBy="name"
+                        />
+                      </td>
+                      <td>
+                        <ArticleSearchInput
+                          articles={articles}
                           value={item.articleCode}
                           onChange={(value) => handleArticleCodeChange(index, value)}
                           onSelect={(article) => handleArticleSelectByCode(index, article)}
@@ -384,17 +401,8 @@ export default function AddSale({ onClose, onBack }: AddSaleProps) {
                         )}
                       </td>
                       <td>
-                        <ArticleSearchInput
-                          articles={articles}
-                          value={item.articleName}
-                          onChange={(value) => handleArticleNameChange(index, value)}
-                          onSelect={(article) => handleArticleSelectByName(index, article)}
-                          placeholder="Enter name"
-                          searchBy="name"
-                        />
-                      </td>
-                      <td>
                         <select
+                          id={`price-type-${index}`}
                           value={item.priceType}
                           onChange={(e) => handleItemChange(index, 'priceType', e.target.value)}
                           disabled={!item.articleId}
@@ -405,9 +413,9 @@ export default function AddSale({ onClose, onBack }: AddSaleProps) {
                             }
                             return (
                               <>
-                                <option value="Price 1">1</option>
-                                {article.price2 && <option value="Price 2">2</option>}
-                                {article.price3 && <option value="Price 3">3</option>}
+                                <option value="Price 1">{article.price1}</option>
+                                <option value="Price 2">{article.price2}</option>
+                                <option value="Price 3">{article.price3}</option>
                                 <option value="Custom">Custom</option>
                               </>
                             );
@@ -439,7 +447,7 @@ export default function AddSale({ onClose, onBack }: AddSaleProps) {
                     </td>
                     <td>{item.total.toFixed(2)}</td>
                     <td>
-                      <button onClick={() => handleRemoveItem(index)}>Remove</button>
+                      <button className="print-hide remove-btn" onClick={() => handleRemoveItem(index)}>Remove</button>
                     </td>
                   </tr>
                   );

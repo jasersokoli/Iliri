@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useAuthStore } from '../store/authStore';
 import './Profile.css';
+import React from 'react';
 
 export default function Profile() {
   const { user, updateUser, logout } = useAuthStore();

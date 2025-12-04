@@ -3,6 +3,7 @@ import { useDataStore } from '../../store/dataStore';
 import Modal from '../Modal';
 import AddSupplier from './AddSupplier';
 import './SuppliersList.css';
+import React from 'react';
 
 interface SuppliersListProps {
   onClose: () => void;

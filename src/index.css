@@ -54,3 +54,193 @@ input, textarea, select {
   font-family: inherit;
 }
 
+@media print {
+
+  /* Remove browser default margin */
+  @page {
+    margin-top: 0 !important;
+  }
+
+  html, body {
+    margin: 20px !important; /* keep your 20px offset */
+    padding: 0 !important;
+  }
+
+  /* Stop modal from centering in print */
+  .modal-overlay {
+    align-items: flex-start !important;
+    justify-content: flex-start !important;
+    padding: 0 !important;
+  }
+
+  /* Make modal behave like normal printed page */
+  .modal-container {
+    position: static !important;
+    top: 0 !important;
+    left: 0 !important;
+
+    transform: none !important;
+    margin: 0 !important;
+
+    /* KEEP padding so content does not sit at the very top */
+    padding: 20px !important;
+
+    width: 100% !important;
+    max-width: 100% !important;
+
+    box-shadow: none !important;
+    border-radius: 0 !important;
+    border: none !important;
+  }
+
+  .modal-content {
+    margin: 0 !important;
+    /* keep content readable */
+    padding: 0 !important;
+  }
+
+  /* Fix modal header alignment in print */
+.modal-header {
+    padding: 0 !important;
+    margin: 0 !important;
+}
+
+.modal-title {
+    text-align: center !important;
+}
+
+  /* Hide ALL print buttons globally */
+  .purchases-print-btn,
+  .suppliers-print-btn,
+  .clients-print-btn,
+  .articles-print-btn,
+  .sales-print-btn {
+    display: none !important;
+  }
+
+  /* Hide close X in ALL modals */
+  .modal-close {
+    display: none !important;
+  }
+
+  /* ---------- ARTICLES PAGE CLEANUP ---------- */
+
+  /* Hide search input */
+  .articles-search-container,
+  .articles-search {
+    display: none !important;
+  }
+
+  /* Hide All / Active / Deleted filters */
+  .articles-filters,
+  .articles-filter-btn {
+    display: none !important;
+  }
+
+  /* Hide Add New Article */
+  .articles-add-btn {
+    display: none !important;
+  }
+}
+
+@media print {
+
+  /* Hide ALL supplier header controls */
+  .suppliers-list-header,
+  .suppliers-dropdown,
+  .suppliers-checkbox,
+  .suppliers-search-container,
+  .add-supplier-btn {
+    display: none !important;
+  }
+  .suppliers-table-container {
+    margin-top: 20px !important;
+  }
+}
+
+@media print {
+    /* Hide ALL client header controls */
+    .clients-list-header {
+        display: none !important;
+    }
+
+    /* Push table DOWN so there is space under the title line */
+    .clients-table-container {
+        margin-top: 20px !important;
+    }
+}
+
+@media print {
+
+    /* Hide ALL purchases header controls */
+    .purchases-list-header {
+        display: none !important;
+    }
+
+    /* Add spacing under the title before the purchases table */
+    .purchases-table-container {
+        margin-top: 20px !important;
+    }
+}
+
+@media print {
+
+    /* Hide ALL sales header controls */
+    .sales-list-header {
+        display: none !important;
+    }
+
+    /* Add spacing below the title line */
+    .sales-table-container {
+        margin-top: 20px !important;
+    }
+}
+
+@media print {
+    .sale-details-print-btn {
+        display: none !important;
+    }
+}
+
+@media print {
+
+    /* Hide toolbar buttons */
+    .add-sale-toolbar button,
+    .add-sale-actions button,
+    .add-sale-payment button,
+    .add-sale-summary button {
+        display: none !important;
+    }
+
+    /* Hide Add Customer button */
+    .add-sale-reference button {
+        display: none !important;
+    }
+
+    /* Hide Remove buttons inside table */
+    .add-sale-table button {
+        display: none !important;
+    }
+
+    /* Hide the Price Type column in header */
+    #add-sale-price-type-header {
+        display: none !important;
+    }
+
+    /* Hide all Price Type dropdowns */
+    select[id^="price-type-"] {
+        display: none !important;
+    }
+
+    /* Hide Price Type table cell (the <td> holding the select) */
+    td:has(select[id^="price-type-"]) {
+        display: none !important;
+    }
+
+}
+
+@media print {
+    .sale-details-payment-btn {
+        display: none !important;
+    }
+}

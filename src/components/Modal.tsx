@@ -1,5 +1,6 @@
 import { useEffect, useRef } from 'react';
 import './Modal.css';
+import React from 'react';
 
 interface ModalProps {
   isOpen: boolean;
@@ -47,6 +48,9 @@ export default function Modal({
         ref={modalRef}
       >
         {title && (
+          <>
+          <h2 className="modal-title modal-title-large print-only">Iliri - Inventory Management</h2>
+
           <div className="modal-header">
             <h2 className="modal-title">{title}</h2>
             {allowClose && (
@@ -59,6 +63,7 @@ export default function Modal({
               </button>
             )}
           </div>
+          </>
         )}
         <div className="modal-content">{children}</div>
       </div>

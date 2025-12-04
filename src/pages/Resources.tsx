@@ -7,6 +7,7 @@ import AddSupplier from '../components/Resources/AddSupplier';
 import ClientsList from '../components/Resources/ClientsList';
 import AddClient from '../components/Resources/AddClient';
 import './Resources.css';
+import React from 'react';
 
 type ResourceView = 'menu' | 'articles-list' | 'add-article' | 'suppliers-list' | 'add-supplier' | 'clients-list' | 'add-client';
 

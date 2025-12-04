@@ -3,6 +3,7 @@ import { useDataStore } from '../../store/dataStore';
 import { format } from 'date-fns';
 import Modal from '../Modal';
 import './SaleDetails.css';
+import React from 'react';
 
 interface SaleDetailsProps {
   saleId: string;
@@ -62,6 +63,7 @@ export default function SaleDetails({ saleId, onClose }: SaleDetailsProps) {
               <div><strong>Client Reference:</strong> {sale.clientReference}</div>
             )}
             <div><strong>Date:</strong> {format(sale.date, 'dd/MM/yyyy')}</div>
+            <div><strong>Time:</strong> {format(sale.date, 'HH:mm:ss')}</div>
             <div><strong>Created by:</strong> {sale.username}</div>
             <div><strong>Total:</strong> ${sale.total.toFixed(2)}</div>
             <div><strong>Paid:</strong> {(sale.paid || displayPaidAmount >= sale.total) ? 'Yes' : `$${displayPaidAmount.toFixed(2)} / $${sale.total.toFixed(2)}`}</div>
