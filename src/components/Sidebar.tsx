@@ -3,10 +3,10 @@ import './Sidebar.css';
 import React from 'react';
 
 const menuItems = [
-  { path: '/dashboard', label: 'Dashboard', icon: '📊' },
-  { path: '/resources', label: 'Resources', icon: '📦' },
-  { path: '/purchases', label: 'Purchases', icon: '🛒' },
-  { path: '/sales', label: 'Sales', icon: '💳' },
+  { path: '/dashboard', label: 'Kryefaqja', icon: '📊' },
+  { path: '/resources', label: 'Resurset', icon: '📦' },
+  { path: '/purchases', label: 'Blerjet', icon: '🛒' },
+  { path: '/sales', label: 'Shitjet', icon: '💳' },
 ];
 
 export default function Sidebar() {

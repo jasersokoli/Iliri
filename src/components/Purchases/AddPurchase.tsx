@@ -179,7 +179,7 @@ export default function AddPurchase({ onClose, onBack }: AddPurchaseProps) {
 
   return (
     <>
-      <Modal isOpen={true} onClose={onClose} size="large" title="Add New Purchase">
+      <Modal isOpen={true} onClose={onClose} size="large" title="Shto Blerje te re">
         <div className="add-purchase">
           <div className="add-purchase-toolbar">
             <button onClick={() => {
@@ -187,12 +187,12 @@ export default function AddPurchase({ onClose, onBack }: AddPurchaseProps) {
               setItems([]);
               setErrors({});
             }}>
-              Add New
+              Shto te Ri
             </button>
-            <button onClick={handleSave}>Save</button>
-            <button onClick={onClose}>Cancel</button>
+            <button onClick={handleSave}>Ruaj</button>
+            <button onClick={onClose}>Anullo</button>
             <div className="add-purchase-supplier">
-              <label>Supplier *</label>
+              <label>Furnitori *</label>
               <div className="supplier-select-container">
                 <select
                   value={selectedSupplier}
@@ -204,7 +204,7 @@ export default function AddPurchase({ onClose, onBack }: AddPurchaseProps) {
                   }}
                   className={errors.supplier ? 'error' : ''}
                 >
-                  <option value="">Select supplier</option>
+                  <option value="">Zgjedh Furnitorin</option>
                   {suppliers.filter((s) => s.active).map((supplier) => (
                     <option key={supplier.id} value={supplier.id}>
                       {supplier.name}
@@ -216,13 +216,13 @@ export default function AddPurchase({ onClose, onBack }: AddPurchaseProps) {
                     className="purchase-action-btn"
                     onClick={() => setShowAddSupplier(true)}
                 >
-                    Add Supplier
+                    Shto Furnitor
                 </button>
               </div>
               {errors.supplier && <span className="error-text">{errors.supplier}</span>}
             </div>
             <div className="add-purchase-date">
-              <label>Date</label>
+              <label>Data</label>
               <div>{format(purchaseDate, 'dd/MM/yyyy')}</div>
             </div>
           </div>
@@ -231,11 +231,11 @@ export default function AddPurchase({ onClose, onBack }: AddPurchaseProps) {
             <table className="add-purchase-table">
               <thead>
                 <tr>
-                  <th>Article Name</th>
-                  <th>Article Code</th>
-                  <th>Unit Cost</th>
-                  <th>Quantity</th>
-                  <th>Total</th>
+                  <th>Emri i Artikullit</th>
+                  <th>Kodi i Artikullit</th>
+                  <th>Kostoja per njesi</th>
+                  <th>Sasia</th>
+                  <th>Totali</th>
                   <th></th>
                 </tr>
               </thead>
@@ -289,22 +289,22 @@ export default function AddPurchase({ onClose, onBack }: AddPurchaseProps) {
                     </td>
                     <td>{item.total.toFixed(2)}</td>
                     <td>
-                      <button onClick={() => handleRemoveItem(index)}>Remove</button>
+                      <button onClick={() => handleRemoveItem(index)}>Fshije</button>
                     </td>
                   </tr>
                 ))}
               </tbody>
             </table>
             <div className="add-purchase-actions">
-              <button onClick={handleAddItem}>Add Article</button>
-              <button onClick={() => setShowAddArticle(true)}>Add New Article</button>
+              <button onClick={handleAddItem}>Shto Artikull</button>
+              <button onClick={() => setShowAddArticle(true)}>Shto Artikull te ri</button>
             </div>
             {errors.items && <span className="error-text">{errors.items}</span>}
           </div>
 
           <div className="add-purchase-summary">
             <div className="add-purchase-total">
-              <strong>Grand Total: {grandTotal.toFixed(2)}</strong>
+              <strong>Totali Perfundimtar: {grandTotal.toFixed(2)}</strong>
             </div>
           </div>
         </div>

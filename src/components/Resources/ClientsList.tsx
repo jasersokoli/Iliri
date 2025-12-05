@@ -58,7 +58,7 @@ export default function ClientsList({ onClose, onSelectClient }: ClientsListProp
 
   return (
     <>
-      <Modal isOpen={true} onClose={onClose} size="large" title="List of Clients">
+      <Modal isOpen={true} onClose={onClose} size="large" title="List e Klientave">
         <div className="clients-list">
           <div className="clients-list-header">
             <select
@@ -78,29 +78,29 @@ export default function ClientsList({ onClose, onSelectClient }: ClientsListProp
                 checked={showActive}
                 onChange={(e) => setShowActive(e.target.checked)}
               />
-              Active
+              Aktive
             </label>
             <button
               className={`clients-filter-btn ${showUnpaid ? 'active' : ''}`}
               onClick={() => setShowUnpaid(!showUnpaid)}
             >
-              Show Unpaid Clients
+              Shfaq Klientat e Papaguar
             </button>
             <input
               type="text"
               className="clients-search"
-              placeholder="Search by name, code, or telephone..."
+              placeholder="Kerko permes emrit, kodit ose telefonit..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
             />
             <button className="clients-add-btn" onClick={() => setShowAddModal(true)}>
-              Add New Client
+              Shto nje Klient te ri
             </button>
             <button
               className="clients-print-btn"
               onClick={() => window.print()}
             >
-              🖨️ Print
+              🖨️ Printo
             </button>
           </div>
 
@@ -108,16 +108,16 @@ export default function ClientsList({ onClose, onSelectClient }: ClientsListProp
             <table className="clients-table">
               <thead>
                 <tr>
-                  <th>Name</th>
-                  <th>Telephone</th>
-                  <th>Active</th>
+                  <th>Emri</th>
+                  <th>Telefoni</th>
+                  <th>Aktive</th>
                 </tr>
               </thead>
               <tbody>
                 {filteredClients.length === 0 ? (
                   <tr>
                     <td colSpan={3} className="clients-empty">
-                      No clients found
+                      Nuk ka Kliente
                     </td>
                   </tr>
                 ) : (

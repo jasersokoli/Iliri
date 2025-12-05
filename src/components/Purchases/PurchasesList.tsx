@@ -46,7 +46,7 @@ export default function PurchasesList({ onClose }: PurchasesListProps) {
 
   return (
     <>
-      <Modal isOpen={true} onClose={onClose} size="large" title="List of Purchases">
+      <Modal isOpen={true} onClose={onClose} size="large" title="Lista e Blerjeve">
 
         <div className="purchases-list"></div>
 
@@ -66,7 +66,7 @@ export default function PurchasesList({ onClose }: PurchasesListProps) {
             <input
               type="text"
               className="purchases-search"
-              placeholder="Search by supplier or date..."
+              placeholder="Kerko permes furnitorit ose dates..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
             />
@@ -76,13 +76,13 @@ export default function PurchasesList({ onClose }: PurchasesListProps) {
                 checked={showOnlyMine}
                 onChange={(e) => setShowOnlyMine(e.target.checked)}
               />
-              Only my purchases
+              Vetem Blerjet e mija
             </label>
             <button
               className="purchases-print-btn"
               onClick={() => window.print()}
             >
-              🖨️ Print
+              🖨️ Printo
             </button>
           </div>
 
@@ -90,19 +90,19 @@ export default function PurchasesList({ onClose }: PurchasesListProps) {
             <table className="purchases-table">
               <thead>
                 <tr>
-                  <th>Number</th>
-                  <th>Supplier</th>
-                  <th>Username</th>
-                  <th>Date</th>
-                  <th>Time</th>
-                  <th>Total</th>
+                  <th>Numri</th>
+                  <th>Furnitori</th>
+                  <th>Emri i perdorusit</th>
+                  <th>Data</th>
+                  <th>Ora</th>
+                  <th>Totali</th>
                 </tr>
               </thead>
               <tbody>
                 {filteredPurchases.length === 0 ? (
                   <tr>
                     <td colSpan={5} className="purchases-empty">
-                      No purchases found
+                      Nuk u gjenden Blerje
                     </td>
                   </tr>
                 ) : (

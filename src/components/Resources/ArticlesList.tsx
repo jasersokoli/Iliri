@@ -76,14 +76,14 @@ export default function ArticlesList({ onClose, onSelectArticle }: ArticlesListP
 
   return (
     <>
-      <Modal isOpen={true} onClose={onClose} size="large" title="List of Articles">
+      <Modal isOpen={true} onClose={onClose} size="large" title="Lista e Artikujve">
         <div className="articles-list">
           <div className="articles-list-header">
             <div className="articles-search-container">
               <input
                 type="text"
                 className="articles-search"
-                placeholder="Search by article name or code..."
+                placeholder="Kerko permes emrit te artikullit ose kodit"
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
               />
@@ -92,19 +92,19 @@ export default function ArticlesList({ onClose, onSelectArticle }: ArticlesListP
                   className={`articles-filter-btn ${filter === 'All' ? 'active' : ''}`}
                   onClick={() => setFilter('All')}
                 >
-                  All
+                  Te Gjithe
                 </button>
                 <button
                   className={`articles-filter-btn ${filter === 'Active' ? 'active' : ''}`}
                   onClick={() => setFilter('Active')}
                 >
-                  Active
+                  Aktive
                 </button>
                 <button
                   className={`articles-filter-btn ${filter === 'Deleted' ? 'active' : ''}`}
                   onClick={() => setFilter('Deleted')}
                 >
-                  Deleted
+                  Te Fshire
                 </button>
               </div>
             </div>
@@ -112,13 +112,13 @@ export default function ArticlesList({ onClose, onSelectArticle }: ArticlesListP
               className="articles-add-btn"
               onClick={() => setShowAddModal(true)}
             >
-              Add New Article
+              Shto Artikull te ri
             </button>
             <button
               className="articles-print-btn"
               onClick={() => window.print()}
             >
-              🖨️ Print
+              🖨️ Printo
             </button>
           </div>
 
@@ -126,20 +126,20 @@ export default function ArticlesList({ onClose, onSelectArticle }: ArticlesListP
             <table className="articles-table">
               <thead>
                 <tr>
-                  <th style={{ width: '200px' }}>Article</th>
-                  <th style={{ width: '120px' }}>Current Stock</th>
-                  <th style={{ width: '120px' }}>Minimum Stock</th>
-                  <th style={{ width: '120px' }}>Cost</th>
-                  <th style={{ width: '120px' }}>Price 1</th>
-                  <th style={{ width: '120px' }}>Price 2</th>
-                  <th style={{ width: '120px' }}>Price 3</th>
+                  <th style={{ width: '200px' }}>Artikull</th>
+                  <th style={{ width: '120px' }}>Stoku Aktual</th>
+                  <th style={{ width: '120px' }}>Stoku Minimal</th>
+                  <th style={{ width: '120px' }}>Kosto</th>
+                  <th style={{ width: '120px' }}>Cmimi 1</th>
+                  <th style={{ width: '120px' }}>Cmimi 2</th>
+                  <th style={{ width: '120px' }}>Cmimi 3</th>
                 </tr>
               </thead>
               <tbody>
                 {filteredArticles.length === 0 ? (
                   <tr>
                     <td colSpan={7} className="articles-empty">
-                      No articles found
+                      Nuk u gjend Artikull
                     </td>
                   </tr>
                 ) : (

@@ -48,7 +48,7 @@ export default function SuppliersList({ onClose, onSelectSupplier }: SuppliersLi
 
   return (
     <>
-      <Modal isOpen={true} onClose={onClose} size="large" title="List of Suppliers">
+      <Modal isOpen={true} onClose={onClose} size="large" title="Lista e Furnitoreve">
         <div className="suppliers-list">
           <div className="suppliers-list-header">
             <select
@@ -68,7 +68,7 @@ export default function SuppliersList({ onClose, onSelectSupplier }: SuppliersLi
                 checked={showActive}
                 onChange={(e) => setShowActive(e.target.checked)}
               />
-              Active
+              Aktive
             </label>
             <input
               type="text"
@@ -78,13 +78,13 @@ export default function SuppliersList({ onClose, onSelectSupplier }: SuppliersLi
               onChange={(e) => setSearch(e.target.value)}
             />
             <button className="suppliers-add-btn" onClick={() => setShowAddModal(true)}>
-              Add New Supplier
+              Shto Futrnitor te ri
             </button>
             <button
               className="suppliers-print-btn"
               onClick={() => window.print()}
             >
-              🖨️ Print
+              🖨️ Printo
             </button>
           </div>
 
@@ -92,16 +92,16 @@ export default function SuppliersList({ onClose, onSelectSupplier }: SuppliersLi
             <table className="suppliers-table">
               <thead>
                 <tr>
-                  <th>Name</th>
-                  <th>Telephone</th>
-                  <th>Active</th>
+                  <th>Emri</th>
+                  <th>Telefoni</th>
+                  <th>Aktive</th>
                 </tr>
               </thead>
               <tbody>
                 {filteredSuppliers.length === 0 ? (
                   <tr>
                     <td colSpan={3} className="suppliers-empty">
-                      No suppliers found
+                      Nuk ka Furnitor
                     </td>
                   </tr>
                 ) : (

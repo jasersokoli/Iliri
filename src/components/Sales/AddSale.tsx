@@ -317,7 +317,7 @@ export default function AddSale({ onClose, onBack }: AddSaleProps) {
 
   return (
     <>
-      <Modal isOpen={true} onClose={onClose} size="large" title="Add New Sale">
+      <Modal isOpen={true} onClose={onClose} size="large" title="Shto Shitje te re">
         <div className="add-sale">
           <div className="add-sale-toolbar">
             <button 
@@ -331,7 +331,7 @@ export default function AddSale({ onClose, onBack }: AddSaleProps) {
               setPaidAmount('');
               setHasSavedOnce(false);
             }}>
-              Add New
+              Shto te Re
             </button>
             <button
               className="print-hide save-btn"
@@ -340,10 +340,10 @@ export default function AddSale({ onClose, onBack }: AddSaleProps) {
             >
               {isSaving ? 'Saving...' : 'Save'}
             </button>
-            <button className="print-hide print-btn" onClick={() => window.print()}>Print</button>
-            <button className="print-hide cancel-btn" onClick={onClose}>Cancel</button>
+            <button className="print-hide print-btn" onClick={() => window.print()}>Printo</button>
+            <button className="print-hide cancel-btn" onClick={onClose}>Anullo</button>
             <div className="add-sale-client">
-              <label>Customer *</label>
+              <label>Klienti *</label>
               <div className="client-select-container">
                 <select
                   value={selectedClient}
@@ -355,7 +355,7 @@ export default function AddSale({ onClose, onBack }: AddSaleProps) {
                   }}
                   className={errors.client ? 'error' : ''}
                 >
-                  <option value="">Select customer</option>
+                  <option value="">Zgjedh Klientin</option>
                   {clients.filter((c) => c.active).map((client) => (
                     <option key={client.id} value={client.id}>
                       {client.name}
@@ -367,13 +367,13 @@ export default function AddSale({ onClose, onBack }: AddSaleProps) {
                     className="purchase-action-btn print-hide"
                     onClick={() => setShowAddClient(true)}
                 >
-                    Add Customer
+                    Shto Kliente
                 </button>
               </div>
               {errors.client && <span className="error-text">{errors.client}</span>}
             </div>
             <div className="add-sale-reference">
-              <label>Client Reference</label>
+              <label>Referenca e Klientit</label>
               <input
                 type="text"
                 value={clientReference}
@@ -382,11 +382,11 @@ export default function AddSale({ onClose, onBack }: AddSaleProps) {
               />
             </div>
             <div className="add-sale-date">
-              <label>Date</label>
+              <label>Data</label>
               <div>{format(saleDate, 'dd/MM/yyyy')}</div>
             </div>
             <div className="add-sale-date">
-              <label>Time</label>
+              <label>Ora</label>
               <div>{format(saleDate, 'HH:mm:ss')}</div>
             </div>
           </div>
@@ -395,12 +395,12 @@ export default function AddSale({ onClose, onBack }: AddSaleProps) {
             <table className="add-sale-table">
               <thead>
                 <tr>
-                  <th>Article Name</th>
-                  <th>Article Code</th>
-                  <th id="add-sale-price-type-header">Price Type</th>
-                  <th>Unit Price</th>
-                  <th>Quantity</th>
-                  <th>Total</th>
+                  <th>Emri i Artikullit</th>
+                  <th>Kodi i Artikullit</th>
+                  <th id="add-sale-price-type-header">Lloji i cmimit</th>
+                  <th>Cmimi i njesise</th>
+                  <th>Sasia</th>
+                  <th>Totali</th>
                   <th></th>
                 </tr>
               </thead>
@@ -479,7 +479,7 @@ export default function AddSale({ onClose, onBack }: AddSaleProps) {
                     </td>
                     <td>{item.total.toFixed(2)}</td>
                     <td>
-                      <button className="print-hide remove-btn" onClick={() => handleRemoveItem(index)}>Remove</button>
+                      <button className="print-hide remove-btn" onClick={() => handleRemoveItem(index)}>Fshije</button>
                     </td>
                   </tr>
                   );
@@ -487,8 +487,8 @@ export default function AddSale({ onClose, onBack }: AddSaleProps) {
               </tbody>
             </table>
             <div className="add-sale-actions">
-              <button onClick={handleAddItem}>Add Article</button>
-              <button onClick={() => setShowAddArticle(true)}>Add New Article</button>
+              <button onClick={handleAddItem}>Shto Artikullin</button>
+              <button onClick={() => setShowAddArticle(true)}>Shto Artikullin e ri</button>
             </div>
             {errors.items && <span className="error-text">{errors.items}</span>}
           </div>
@@ -505,11 +505,11 @@ export default function AddSale({ onClose, onBack }: AddSaleProps) {
                   }
                 }}
               />
-              Not Paid
+              Papaguar
             </label>
             {!notPaid && (
               <div className="add-sale-paid-amount">
-                <label>Amount Paid</label>
+                <label>Sasia e paguar</label>
                 <input
                   type="number"
                   step="0.01"
@@ -522,7 +522,7 @@ export default function AddSale({ onClose, onBack }: AddSaleProps) {
                   max={grandTotal}
                 />
                 <span className="add-sale-remaining">
-                  Remaining: {(grandTotal - (typeof paidAmount === 'number' ? paidAmount : (paidAmount === '' ? 0 : parseFloat(String(paidAmount)) || 0))).toFixed(2)}
+                  Mbetur: {(grandTotal - (typeof paidAmount === 'number' ? paidAmount : (paidAmount === '' ? 0 : parseFloat(String(paidAmount)) || 0))).toFixed(2)}
                 </span>
               </div>
             )}
@@ -530,7 +530,7 @@ export default function AddSale({ onClose, onBack }: AddSaleProps) {
 
           <div className="add-sale-summary">
             <div className="add-sale-total">
-              <strong>Grand Total: {grandTotal.toFixed(2)}</strong>
+              <strong>Totali Perfundimtar: {grandTotal.toFixed(2)}</strong>
             </div>
           </div>
         </div>

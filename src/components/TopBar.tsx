@@ -45,7 +45,7 @@ export default function TopBar() {
   return (
     <header className="topbar">
       <div className="topbar-left">
-        <h2 className="topbar-title">Inventory Management</h2>
+        <h2 className="topbar-title">Menaxhimi i Inventarit</h2>
       </div>
       <div className="topbar-right">
         <div className="topbar-user" ref={dropdownRef}>
@@ -83,7 +83,7 @@ export default function TopBar() {
                   }
                 }}
               >
-                Account Info
+                Informacioni i Llogarisë
               </button>
               <button
                 className="topbar-dropdown-item"
@@ -95,7 +95,7 @@ export default function TopBar() {
                   }
                 }}
               >
-                Sign Out
+                Dil nga llogaria
               </button>
             </div>
           )}

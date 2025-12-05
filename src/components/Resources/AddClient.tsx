@@ -105,26 +105,26 @@ export default function AddClient({ clientId, onClose, onBack }: AddClientProps)
   };
 
   return (
-    <Modal isOpen={true} onClose={onClose} size="medium" title={existingClient ? 'Client Details' : 'Add New Client'}>
+    <Modal isOpen={true} onClose={onClose} size="medium" title={existingClient ? 'Client Details' : 'Shto Klient te ri'}>
       <div className="add-client">
         <div className="add-client-toolbar">
           <button onClick={() => setMode('edit')} disabled={mode === 'edit'}>
-            {existingClient ? 'Edit' : 'Add New'}
+            {existingClient ? 'Edit' : 'Shto te Ri'}
           </button>
           <button onClick={handleSave} disabled={mode === 'view'}>
-            Save
+            Ruaj
           </button>
           <button onClick={handleCancel} disabled={mode === 'view'}>
-            Cancel
+            Anullo
           </button>
           <button onClick={handleDelete} disabled={!existingClient || mode === 'edit'} className="danger">
-            Delete
+            Fshij
           </button>
         </div>
 
         <div className="add-client-form">
           <div className="add-client-field">
-            <label>Name *</label>
+            <label>Emri *</label>
             <input
               type="text"
               value={formData.name || ''}
@@ -136,7 +136,7 @@ export default function AddClient({ clientId, onClose, onBack }: AddClientProps)
           </div>
 
           <div className="add-client-field">
-            <label>Telephone</label>
+            <label>Telefoni</label>
             <input
               type="text"
               value={formData.telephone || ''}
@@ -155,7 +155,7 @@ export default function AddClient({ clientId, onClose, onBack }: AddClientProps)
                 onChange={(e) => handleChange('active', e.target.checked)}
                 disabled={mode === 'view'}
               />
-              Active
+              Aktive
             </label>
           </div>
         </div>

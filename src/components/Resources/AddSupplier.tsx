@@ -105,26 +105,26 @@ export default function AddSupplier({ supplierId, onClose, onBack }: AddSupplier
   };
 
   return (
-    <Modal isOpen={true} onClose={onClose} size="medium" title={existingSupplier ? 'Supplier Details' : 'Add New Supplier'}>
+    <Modal isOpen={true} onClose={onClose} size="medium" title={existingSupplier ? 'Supplier Details' : 'Shto nje Furnitor te ri'}>
       <div className="add-supplier">
         <div className="add-supplier-toolbar">
           <button onClick={() => setMode('edit')} disabled={mode === 'edit'}>
-            {existingSupplier ? 'Edit' : 'Add New'}
+            {existingSupplier ? 'Edit' : 'Shto te Ri'}
           </button>
           <button onClick={handleSave} disabled={mode === 'view'}>
-            Save
+            Ruaj
           </button>
           <button onClick={handleCancel} disabled={mode === 'view'}>
-            Cancel
+            Anullo
           </button>
           <button onClick={handleDelete} disabled={!existingSupplier || mode === 'edit'} className="danger">
-            Delete
+            Fshij
           </button>
         </div>
 
         <div className="add-supplier-form">
           <div className="add-supplier-field">
-            <label>Name *</label>
+            <label>Emri *</label>
             <input
               type="text"
               value={formData.name || ''}
@@ -136,7 +136,7 @@ export default function AddSupplier({ supplierId, onClose, onBack }: AddSupplier
           </div>
 
           <div className="add-supplier-field">
-            <label>Telephone</label>
+            <label>Telefoni</label>
             <input
               type="text"
               value={formData.telephone || ''}
@@ -155,7 +155,7 @@ export default function AddSupplier({ supplierId, onClose, onBack }: AddSupplier
                 onChange={(e) => handleChange('active', e.target.checked)}
                 disabled={mode === 'view'}
               />
-              Active
+              Aktive
             </label>
           </div>
         </div>

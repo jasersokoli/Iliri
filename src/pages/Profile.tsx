@@ -77,43 +77,43 @@ export default function Profile() {
 
   return (
     <div className="profile">
-      <h1 className="profile-title">Account Info</h1>
+      <h1 className="profile-title">Informacioni i Llogarisë</h1>
 
       <div className="profile-tabs">
         <button
           className={`profile-tab ${activeTab === 'account' ? 'active' : ''}`}
           onClick={() => setActiveTab('account')}
         >
-          Account Info
+          Informacioni i Llogarisë
         </button>
         <button
           className={`profile-tab ${activeTab === 'password' ? 'active' : ''}`}
           onClick={() => setActiveTab('password')}
         >
-          Change Password
+          Ndrysho Fjalëkalimin
         </button>
         <button
           className={`profile-tab ${activeTab === 'email' ? 'active' : ''}`}
           onClick={() => setActiveTab('email')}
         >
-          Change Email
+          Ndrysho Emailin
         </button>
       </div>
 
       <div className="profile-content">
         {activeTab === 'account' && (
           <div className="profile-section">
-            <h2 className="profile-section-title">Account Information</h2>
+            <h2 className="profile-section-title">Informacioni i Llogarisë</h2>
             <div className="profile-field">
-              <label className="profile-label">Name</label>
+              <label className="profile-label">Emri</label>
               <div className="profile-value">{user?.name}</div>
             </div>
             <div className="profile-field">
-              <label className="profile-label">Email</label>
+              <label className="profile-label">Emaili</label>
               <div className="profile-value">{user?.email}</div>
             </div>
             <div className="profile-field">
-              <label className="profile-label">Theme Preference</label>
+              <label className="profile-label">Preferenca e Temes</label>
               <div className="profile-theme-toggle">
                 <span>Light Mode</span>
                 <button
@@ -123,7 +123,7 @@ export default function Profile() {
                 >
                   <span className="profile-toggle-slider"></span>
                 </button>
-                <span>Dark Mode</span>
+                <span>Tema e Erret</span>
               </div>
             </div>
           </div>
@@ -131,7 +131,7 @@ export default function Profile() {
 
         {activeTab === 'password' && (
           <div className="profile-section">
-            <h2 className="profile-section-title">Change Password</h2>
+            <h2 className="profile-section-title">Ndrysho Fjalëkalimin</h2>
             {errors.general && (
               <div className="profile-error">{errors.general}</div>
             )}
@@ -140,7 +140,7 @@ export default function Profile() {
             )}
             <div className="profile-field">
               <label className="profile-label" htmlFor="current-password">
-                Current Password
+                Fjalëkalimi Aktual
               </label>
               <input
                 id="current-password"
@@ -160,7 +160,7 @@ export default function Profile() {
             </div>
             <div className="profile-field">
               <label className="profile-label" htmlFor="new-password">
-                New Password
+                Fjalekalimi i Ri
               </label>
               <input
                 id="new-password"
@@ -180,7 +180,7 @@ export default function Profile() {
             </div>
             <div className="profile-field">
               <label className="profile-label" htmlFor="confirm-password">
-                Confirm New Password
+                Konfirmo Fjalekalimin E Ri
               </label>
               <input
                 id="confirm-password"
@@ -199,14 +199,14 @@ export default function Profile() {
               )}
             </div>
             <button className="profile-button" onClick={handlePasswordChange}>
-              Change Password
+              Ndrysho Fjalekalimin
             </button>
           </div>
         )}
 
         {activeTab === 'email' && (
           <div className="profile-section">
-            <h2 className="profile-section-title">Change Email</h2>
+            <h2 className="profile-section-title">Ndrysho Emailin</h2>
             {errors.general && (
               <div className="profile-error">{errors.general}</div>
             )}
@@ -214,12 +214,12 @@ export default function Profile() {
               <div className="profile-success">{message}</div>
             )}
             <div className="profile-field">
-              <label className="profile-label">Current Email</label>
+              <label className="profile-label">Emaili Aktual</label>
               <div className="profile-value">{user?.email}</div>
             </div>
             <div className="profile-field">
               <label className="profile-label" htmlFor="new-email">
-                New Email
+                Email i Ri
               </label>
               <input
                 id="new-email"
@@ -239,10 +239,10 @@ export default function Profile() {
               )}
             </div>
             <p className="profile-hint">
-              A verification link will be sent to the admin email. Your email will be updated after verification.
+              Një lidhje verifikimi do t’i dërgohet emailit të administratorit. Emaili juaj do të përditësohet pas verifikimit.
             </p>
             <button className="profile-button" onClick={handleEmailChange}>
-              Send Verification Email
+              Dërgo Emailin e Verifikimit
             </button>
           </div>
         )}

@@ -14,7 +14,7 @@ export default function Sales() {
     return (
       <div className="sales">
         <div className="sales-header">
-          <h1 className="sales-title">Sales</h1>
+          <h1 className="sales-title">Shitjet</h1>
         </div>
         <div className="sales-grid">
           <div
@@ -30,8 +30,8 @@ export default function Sales() {
             role="button"
           >
             <div className="sales-card-icon">📋</div>
-            <h3 className="sales-card-title">List of Sales</h3>
-            <p className="sales-card-desc">View all sales records</p>
+            <h3 className="sales-card-title">Lista e Shitjeve</h3>
+            <p className="sales-card-desc">Shiko te gjitha te dhenat e Shitjeve</p>
           </div>
           <div
             className="sales-card"
@@ -46,8 +46,8 @@ export default function Sales() {
             role="button"
           >
             <div className="sales-card-icon">➕</div>
-            <h3 className="sales-card-title">Add New Sale</h3>
-            <p className="sales-card-desc">Record a new sale transaction</p>
+            <h3 className="sales-card-title">Shto nje Shitje te re</h3>
+            <p className="sales-card-desc">Sheno nje transaksion Shitjet te re</p>
           </div>
         </div>
       </div>
@@ -63,7 +63,7 @@ export default function Sales() {
         >
           ← Back
         </button>
-        <h1 className="sales-title">Sales</h1>
+        <h1 className="sales-title">Shitjet</h1>
       </div>
 
       {currentView === 'list' && (

@@ -22,7 +22,7 @@ export default function Resources() {
     return (
       <div className="resources">
         <div className="resources-header">
-          <h1 className="resources-title">Resources</h1>
+          <h1 className="resources-title">Resurset</h1>
         </div>
         <div className="resources-grid">
           <div
@@ -38,8 +38,8 @@ export default function Resources() {
             role="button"
           >
             <div className="resources-card-icon">📦</div>
-            <h3 className="resources-card-title">List Articles</h3>
-            <p className="resources-card-desc">View and manage all articles in stock</p>
+            <h3 className="resources-card-title">Lista e Artikujve</h3>
+            <p className="resources-card-desc">Shiko dhe menaxho te gjithe Artikujt ne stok</p>
           </div>
           <div
             className="resources-card"
@@ -54,8 +54,8 @@ export default function Resources() {
             role="button"
           >
             <div className="resources-card-icon">➕</div>
-            <h3 className="resources-card-title">Add New Article</h3>
-            <p className="resources-card-desc">Create a new article record</p>
+            <h3 className="resources-card-title">Shto nje Artikull te ri</h3>
+            <p className="resources-card-desc">Krijo nje Artikull te ri</p>
           </div>
           <div
             className="resources-card"
@@ -70,8 +70,8 @@ export default function Resources() {
             role="button"
           >
             <div className="resources-card-icon">🏢</div>
-            <h3 className="resources-card-title">List Suppliers</h3>
-            <p className="resources-card-desc">View and manage all suppliers</p>
+            <h3 className="resources-card-title">Lista e Furnitoreve</h3>
+            <p className="resources-card-desc">Shiko dhe menaxho te gjithe Furnitoret</p>
           </div>
           <div
             className="resources-card"
@@ -86,8 +86,8 @@ export default function Resources() {
             role="button"
           >
             <div className="resources-card-icon">➕</div>
-            <h3 className="resources-card-title">Add New Supplier</h3>
-            <p className="resources-card-desc">Create a new supplier record</p>
+            <h3 className="resources-card-title">Shto nje Furnitor te ri</h3>
+            <p className="resources-card-desc">Krijo nje Furnitor te ri</p>
           </div>
           <div
             className="resources-card"
@@ -102,8 +102,8 @@ export default function Resources() {
             role="button"
           >
             <div className="resources-card-icon">👥</div>
-            <h3 className="resources-card-title">List Clients</h3>
-            <p className="resources-card-desc">View and manage all clients</p>
+            <h3 className="resources-card-title">Lista e Klienteve</h3>
+            <p className="resources-card-desc">Shiko dhe menaxho te gjithe Klientet</p>
           </div>
           <div
             className="resources-card"
@@ -118,8 +118,8 @@ export default function Resources() {
             role="button"
           >
             <div className="resources-card-icon">➕</div>
-            <h3 className="resources-card-title">Add New Client</h3>
-            <p className="resources-card-desc">Create a new client record</p>
+            <h3 className="resources-card-title">Shto nje Klient te ri</h3>
+            <p className="resources-card-desc">Krijo nje Klient te ri</p>
           </div>
         </div>
       </div>
@@ -135,7 +135,7 @@ export default function Resources() {
         >
           ← Back
         </button>
-        <h1 className="resources-title">Resources</h1>
+        <h1 className="resources-title">Resurset</h1>
       </div>
 
       {currentView === 'articles-list' && (

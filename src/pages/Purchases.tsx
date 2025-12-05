@@ -14,7 +14,7 @@ export default function Purchases() {
     return (
       <div className="purchases">
         <div className="purchases-header">
-          <h1 className="purchases-title">Purchases</h1>
+          <h1 className="purchases-title">Blerjet</h1>
         </div>
         <div className="purchases-grid">
           <div
@@ -30,8 +30,8 @@ export default function Purchases() {
             role="button"
           >
             <div className="purchases-card-icon">📋</div>
-            <h3 className="purchases-card-title">List of Purchases</h3>
-            <p className="purchases-card-desc">View all purchase records</p>
+            <h3 className="purchases-card-title">Lista e Blerjeve</h3>
+            <p className="purchases-card-desc">Shiko te gjitha te dhenat e Blerjeve</p>
           </div>
           <div
             className="purchases-card"
@@ -46,8 +46,8 @@ export default function Purchases() {
             role="button"
           >
             <div className="purchases-card-icon">➕</div>
-            <h3 className="purchases-card-title">Add New Purchase</h3>
-            <p className="purchases-card-desc">Register a new purchase</p>
+            <h3 className="purchases-card-title">Shto Blerje te reja</h3>
+            <p className="purchases-card-desc">Rregjitro nje Blerje te re</p>
           </div>
         </div>
       </div>
@@ -63,7 +63,7 @@ export default function Purchases() {
         >
           ← Back
         </button>
-        <h1 className="purchases-title">Purchases</h1>
+        <h1 className="purchases-title">Blerjet</h1>
       </div>
 
       {currentView === 'list' && (

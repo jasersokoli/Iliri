@@ -49,13 +49,13 @@ export default function Dashboard() {
   return (
     <div className="dashboard">
       <div className="dashboard-header">
-        <h1 className="dashboard-title">Dashboard</h1>
+        <h1 className="dashboard-title">Kryefaqja</h1>
       </div>
 
       <div className="dashboard-grid">
         {/* Analytics Graphs */}
         <div className="dashboard-card">
-          <h3 className="dashboard-card-title">Total Sales</h3>
+          <h3 className="dashboard-card-title">Shitjet Totale</h3>
           <ResponsiveContainer width="100%" height={200}>
             <LineChart data={salesData}>
               <CartesianGrid strokeDasharray="3 3" />
@@ -68,28 +68,28 @@ export default function Dashboard() {
         </div>
 
         <div className="dashboard-card">
-          <h3 className="dashboard-card-title">Total Revenue</h3>
+          <h3 className="dashboard-card-title">Te Ardhurat Totale</h3>
           <div className="dashboard-metric">
             ${analytics?.totalRevenue.toFixed(2) || '0.00'}
           </div>
         </div>
 
         <div className="dashboard-card">
-          <h3 className="dashboard-card-title">Total Profit</h3>
+          <h3 className="dashboard-card-title">Fitimi Total</h3>
           <div className="dashboard-metric">
             ${analytics?.totalProfit.toFixed(2) || '0.00'}
           </div>
         </div>
 
         <div className="dashboard-card">
-          <h3 className="dashboard-card-title">Total Debt</h3>
+          <h3 className="dashboard-card-title">Borxhet Total</h3>
           <div className="dashboard-metric dashboard-metric-danger">
             ${analytics?.totalDebt.toFixed(2) || '0.00'}
           </div>
         </div>
 
         <div className="dashboard-card">
-          <h3 className="dashboard-card-title">Inventory Value</h3>
+          <h3 className="dashboard-card-title">Vlera e Inventarit</h3>
           <div className="dashboard-metric">
             ${analytics?.inventoryValue.toFixed(2) || '0.00'}
           </div>
@@ -97,7 +97,7 @@ export default function Dashboard() {
 
         {/* Notes Section */}
         <div className="dashboard-card dashboard-notes">
-          <h3 className="dashboard-card-title">Notes</h3>
+          <h3 className="dashboard-card-title">Shenime</h3>
           <textarea
             className="dashboard-notes-textarea"
             value={notes}
@@ -110,7 +110,7 @@ export default function Dashboard() {
         <div className="dashboard-card dashboard-notifications">
           <div className="dashboard-notifications-header">
             <h3 className="dashboard-card-title">
-              Notifications
+              Lajmerime
               {unreadCount > 0 && (
                 <span className="dashboard-notification-badge">{unreadCount}</span>
               )}
@@ -151,20 +151,20 @@ export default function Dashboard() {
 
         {/* Top Products */}
         <div className="dashboard-card">
-          <h3 className="dashboard-card-title">Top Selling Products</h3>
+          <h3 className="dashboard-card-title">Produketet me te shitura</h3>
           <div className="dashboard-table">
             <table>
               <thead>
                 <tr>
-                  <th>Product</th>
-                  <th>Quantity Sold</th>
+                  <th>Produktet</th>
+                  <th>Sasia e shitur</th>
                 </tr>
               </thead>
               <tbody>
                 {topProducts.length === 0 ? (
                   <tr>
                     <td colSpan={2} className="dashboard-empty">
-                      No data available
+                      Nuk ka te dhena
                     </td>
                   </tr>
                 ) : (
@@ -182,20 +182,20 @@ export default function Dashboard() {
 
         {/* Active Clients */}
         <div className="dashboard-card">
-          <h3 className="dashboard-card-title">Most Active Clients</h3>
+          <h3 className="dashboard-card-title">Klientet me aktiv</h3>
           <div className="dashboard-table">
             <table>
               <thead>
                 <tr>
-                  <th>Client</th>
-                  <th>Total Purchases</th>
+                  <th>Klient</th>
+                  <th>Blerjet Totale</th>
                 </tr>
               </thead>
               <tbody>
                 {activeClients.length === 0 ? (
                   <tr>
                     <td colSpan={2} className="dashboard-empty">
-                      No data available
+                      Nuk ka te dhena
                     </td>
                   </tr>
                 ) : (

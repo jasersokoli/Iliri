@@ -190,7 +190,7 @@ export default function AddArticle({ articleId, onClose, onBack }: AddArticlePro
   const units = ['pcs', 'kg', 'g', 'L', 'mL', 'm', 'cm', 'box', 'pack'];
 
   return (
-    <Modal isOpen={true} onClose={handleClose} size="large" title={existingArticle ? 'Article Details' : 'Add New Article'}>
+    <Modal isOpen={true} onClose={handleClose} size="large" title={existingArticle ? 'Article Details' : 'Shto Artikull te Ri'}>
       <div className="add-article">
         <div className="add-article-toolbar">
           <button
@@ -229,28 +229,28 @@ export default function AddArticle({ articleId, onClose, onBack }: AddArticlePro
             onClick={handleSave}
             disabled={mode === 'view'}
           >
-            Save
+            Ruaj
           </button>
           <button
             className="add-article-btn"
             onClick={handleCancel}
             disabled={mode === 'view'}
           >
-            Cancel
+            Anullo
           </button>
           <button
             className="add-article-btn add-article-btn-danger"
             onClick={handleDelete}
             disabled={!existingArticle || mode === 'edit'}
           >
-            Delete
+            Fshije
           </button>
         </div>
 
         <div className="add-article-form">
           <div className="add-article-row">
             <div className="add-article-field">
-              <label className="add-article-label">Name of Article *</label>
+              <label className="add-article-label">Emri i Artikullit *</label>
               <input
                 type="text"
                 value={formData.name || ''}
@@ -262,7 +262,7 @@ export default function AddArticle({ articleId, onClose, onBack }: AddArticlePro
             </div>
 
             <div className="add-article-field">
-              <label className="add-article-label">Article Code *</label>
+              <label className="add-article-label">Kodi i Artikullit *</label>
               <input
                 type="text"
                 value={formData.code1 || ''}
@@ -276,7 +276,7 @@ export default function AddArticle({ articleId, onClose, onBack }: AddArticlePro
 
           <div className="add-article-row">
             <div className="add-article-field">
-              <label className="add-article-label">Cost *</label>
+              <label className="add-article-label">Kostoja *</label>
               <input
                 type="number"
                 step="0.01"
@@ -289,7 +289,7 @@ export default function AddArticle({ articleId, onClose, onBack }: AddArticlePro
             </div>
 
             <div className="add-article-field">
-              <label className="add-article-label">Current Stock *</label>
+              <label className="add-article-label">Stoku Aktual *</label>
               <input
                 type="number"
                 step="0.01"
@@ -302,7 +302,7 @@ export default function AddArticle({ articleId, onClose, onBack }: AddArticlePro
             </div>
 
             <div className="add-article-field">
-              <label className="add-article-label">Minimum Stock</label>
+              <label className="add-article-label">Stoku Minimal</label>
               <input
                 type="number"
                 step="0.01"
@@ -318,7 +318,7 @@ export default function AddArticle({ articleId, onClose, onBack }: AddArticlePro
 
           <div className="add-article-row">
             <div className="add-article-field">
-              <label className="add-article-label">Price 1 *</label>
+              <label className="add-article-label">Cmimi 1 *</label>
               <input
                 type="number"
                 step="0.01"
@@ -331,7 +331,7 @@ export default function AddArticle({ articleId, onClose, onBack }: AddArticlePro
             </div>
 
             <div className="add-article-field">
-              <label className="add-article-label">Price 2</label>
+              <label className="add-article-label">Cmimi 2</label>
               <input
                 type="number"
                 step="0.01"
@@ -343,7 +343,7 @@ export default function AddArticle({ articleId, onClose, onBack }: AddArticlePro
             </div>
 
             <div className="add-article-field">
-              <label className="add-article-label">Price 3</label>
+              <label className="add-article-label">Cmimi 3</label>
               <input
                 type="number"
                 step="0.01"
@@ -357,14 +357,14 @@ export default function AddArticle({ articleId, onClose, onBack }: AddArticlePro
 
           <div className="add-article-row">
             <div className="add-article-field">
-              <label className="add-article-label">Supplier</label>
+              <label className="add-article-label">Furnitori</label>
               <select
                 value={formData.supplierId || ''}
                 onChange={(e) => handleChange('supplierId', e.target.value || undefined)}
                 disabled={mode === 'view'}
                 className="add-article-input"
               >
-                <option value="">Select supplier</option>
+                <option value="">Zgjedh Furnitorin</option>
                 {suppliers.filter((s) => s.active).map((supplier) => (
                   <option key={supplier.id} value={supplier.id}>
                     {supplier.name}
@@ -374,7 +374,7 @@ export default function AddArticle({ articleId, onClose, onBack }: AddArticlePro
             </div>
 
             <div className="add-article-field">
-              <label className="add-article-label">Unit</label>
+              <label className="add-article-label">Njesia</label>
               <select
                 value={formData.unit || 'pcs'}
                 onChange={(e) => handleChange('unit', e.target.value)}

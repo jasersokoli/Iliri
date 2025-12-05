@@ -57,7 +57,7 @@ export default function SalesList({ onClose }: SalesListProps) {
 
   return (
     <>
-      <Modal isOpen={true} onClose={onClose} size="large" title="List of Sales">
+      <Modal isOpen={true} onClose={onClose} size="large" title="Lista e Shitjeve">
         <div className="sales-list">
           <div className="sales-list-header">
             <select
@@ -74,7 +74,7 @@ export default function SalesList({ onClose }: SalesListProps) {
             <input
               type="text"
               className="sales-search"
-              placeholder="Search by customer, reference, or date..."
+              placeholder="Kerko permes klientit, references ose dates..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
             />
@@ -84,7 +84,7 @@ export default function SalesList({ onClose }: SalesListProps) {
                 checked={showOnlyMine}
                 onChange={(e) => setShowOnlyMine(e.target.checked)}
               />
-              Only my sales
+              Vetem Shitjet e mija
             </label>
             {selectedSales.size > 0 && (
               <button
@@ -97,14 +97,14 @@ export default function SalesList({ onClose }: SalesListProps) {
                   }
                 }}
               >
-                Delete Selected ({selectedSales.size})
+                Fshij te Perzgjedhurat ({selectedSales.size})
               </button>
             )}
             <button
               className="sales-print-btn"
               onClick={() => window.print()}
             >
-              🖨️ Print
+              🖨️ Printo
             </button>
           </div>
 
@@ -125,22 +125,22 @@ export default function SalesList({ onClose }: SalesListProps) {
                       }}
                     />
                   </th>
-                  <th>Number</th>
-                  <th>Customer</th>
-                  <th>Reference</th>
-                  <th>Username</th>
-                  <th>Date</th>
-                  <th>Time</th>
-                  <th>Unit Price</th>
-                  <th>Total</th>
-                  <th>Paid</th>
+                  <th>Numri</th>
+                  <th>Klienti</th>
+                  <th>Referenca</th>
+                  <th>Emri i Perdoruesit</th>
+                  <th>Data</th>
+                  <th>Ora</th>
+                  <th>Cmimi i njesise</th>
+                  <th>Totali</th>
+                  <th>Paguar</th>
                 </tr>
               </thead>
               <tbody>
                 {filteredSales.length === 0 ? (
                   <tr>
                     <td colSpan={10} className="sales-empty">
-                      No sales found
+                      Nuk u gjeten Shitje
                     </td>
                   </tr>
                 ) : (
