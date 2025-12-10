@@ -41,7 +41,8 @@ export default function SalesList({ onClose }: SalesListProps) {
         (s) =>
           s.clientName.toLowerCase().includes(searchLower) ||
           (s.clientReference && s.clientReference.toLowerCase().includes(searchLower)) ||
-          format(s.date, 'dd/MM/yyyy').includes(search)
+          format(s.date, 'dd/MM/yyyy').includes(search) ||
+          String(s.number).includes(searchLower)
       );
     }
 
@@ -53,7 +54,7 @@ export default function SalesList({ onClose }: SalesListProps) {
     refreshAnalytics();
   };
 
-  const clientOptions = ['All', ...clients.filter((c) => c.active).map((c) => c.name)];
+  const clientOptions = ['Te gjithe', ...clients.filter((c) => c.active).map((c) => c.name)];
 
   return (
     <>
@@ -125,7 +126,7 @@ export default function SalesList({ onClose }: SalesListProps) {
                       }}
                     />
                   </th>
-                  <th>Numri</th>
+                  <th>Numri i fatures</th>
                   <th>Klienti</th>
                   <th>Referenca</th>
                   <th>Emri i Perdoruesit</th>
@@ -147,7 +148,7 @@ export default function SalesList({ onClose }: SalesListProps) {
                   filteredSales.map((sale) => (
                     <tr
                       key={sale.id}
-                      className={`${selectedSaleId === sale.id ? 'selected' : ''} ${!sale.paid ? 'unpaid' : ''}`}
+                      className={`${selectedSaleId === sale.id ? 'selected' : ''} ${!sale.paid ? 'Papaguar' : ''}`}
                       onClick={() => setSelectedSaleId(sale.id)}
                       onDoubleClick={() => {
                         setSelectedSaleId(sale.id);
@@ -175,8 +176,8 @@ export default function SalesList({ onClose }: SalesListProps) {
                       <td>{sale.username}</td>
                       <td>{format(sale.date, 'dd/MM/yyyy')}</td>
                       <td>{format(sale.date, 'HH:mm:ss')}</td>
-                      <td>${sale.unitPrice.toFixed(2)}</td>
-                      <td>${sale.total.toFixed(2)}</td>
+                      <td>{sale.unitPrice.toFixed(2)}</td>
+                      <td>{sale.total.toFixed(2)}</td>
                       <td>
                         {(() => {
                           const payments = getPaymentsBySaleId(sale.id);
@@ -186,10 +187,10 @@ export default function SalesList({ onClose }: SalesListProps) {
                           const isFullyPaid = sale.paid || (displayPaid >= sale.total);
                           
                           return isFullyPaid ? (
-                            <span>✓ Paid</span>
+                            <span>✓ Paguar</span>
                           ) : (
                             <span>
-                              {displayPaid > 0 ? `$${displayPaid.toFixed(2)} / $${sale.total.toFixed(2)}` : 'Unpaid'}
+                              {displayPaid > 0 ? `${displayPaid.toFixed(2)} / ${sale.total.toFixed(2)}` : 'Papaguar'}
                             </span>
                           );
                         })()}

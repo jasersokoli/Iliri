@@ -54,7 +54,7 @@ export default function ClientsList({ onClose, onSelectClient }: ClientsListProp
     return filtered;
   }, [clients, search, showActive, showUnpaid, selectedClientName, clientsWithUnpaid]);
 
-  const clientNames = ['All', ...Array.from(new Set(clients.map((c) => c.name)))];
+  const clientNames = ['Te gjithe', ...Array.from(new Set(clients.map((c) => c.name)))];
 
   return (
     <>

@@ -77,7 +77,7 @@ export default function ArticleSearchInput({
     setSuggestions(filtered.slice(0, 10)); // Limit to 10 suggestions
     setShowSuggestions(filtered.length > 0);
     setSelectedIndex(-1);
-  }, [value, activeArticles, searchBy]);
+  }, [value, searchBy, articles]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     onChange(e.target.value);

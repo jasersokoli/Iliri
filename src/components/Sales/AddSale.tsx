@@ -29,6 +29,7 @@ export default function AddSale({ onClose, onBack }: AddSaleProps) {
   const [showAddClient, setShowAddClient] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
   const [hasSavedOnce, setHasSavedOnce] = useState(false);
+  const [generatedNumber, setGeneratedNumber] = useState<number | null>(null);
 
   const handleAddItem = () => {
     setItems([
@@ -41,6 +42,7 @@ export default function AddSale({ onClose, onBack }: AddSaleProps) {
         unitPrice: 0,
         quantity: 0,
         total: 0,
+        cost: 0
       },
     ]);
   };
@@ -51,6 +53,7 @@ export default function AddSale({ onClose, onBack }: AddSaleProps) {
     item.articleId = article.id;
     item.articleCode = article.code1;
     item.articleName = article.name;
+    item.cost = article.cost;
 
     // Check for last used price for this client-article combination
     let priceToUse = article.price1;
@@ -187,7 +190,7 @@ export default function AddSale({ onClose, onBack }: AddSaleProps) {
       // Recalculate total when quantity changes
       item.total = item.unitPrice * item.quantity;
     } else {
-      item[field] = value;
+      (item as any)[field] = value;
     }
 
     newItems[index] = item;
@@ -280,6 +283,7 @@ export default function AddSale({ onClose, onBack }: AddSaleProps) {
     // DISABLE THE SAVE BUTTON AFTER FIRST SUCCESSFUL SAVE
     setHasSavedOnce(true);
     addSale(sale);
+    setGeneratedNumber(saleNumber);
 
     // If there's a payment (partial or full), create a payment record
     // This will update the sale's paidAmount and paid status correctly
@@ -317,7 +321,7 @@ export default function AddSale({ onClose, onBack }: AddSaleProps) {
 
   return (
     <>
-      <Modal isOpen={true} onClose={onClose} size="large" title="Shto Shitje te re">
+      <Modal isOpen={true} onClose={onClose} size="large" title="Preventiv">
         <div className="add-sale">
           <div className="add-sale-toolbar">
             <button 
@@ -338,7 +342,7 @@ export default function AddSale({ onClose, onBack }: AddSaleProps) {
               onClick={handleSave}
               disabled={isSaving || hasSavedOnce}
             >
-              {isSaving ? 'Saving...' : 'Save'}
+              {isSaving ? 'Saving...' : 'Ruaj'}
             </button>
             <button className="print-hide print-btn" onClick={() => window.print()}>Printo</button>
             <button className="print-hide cancel-btn" onClick={onClose}>Anullo</button>
@@ -378,7 +382,6 @@ export default function AddSale({ onClose, onBack }: AddSaleProps) {
                 type="text"
                 value={clientReference}
                 onChange={(e) => setClientReference(e.target.value)}
-                placeholder="e.g., Jaser's house"
               />
             </div>
             <div className="add-sale-date">
@@ -389,14 +392,21 @@ export default function AddSale({ onClose, onBack }: AddSaleProps) {
               <label>Ora</label>
               <div>{format(saleDate, 'HH:mm:ss')}</div>
             </div>
+            {generatedNumber !== null && (
+              <div className="add-sale-date">
+                <label>Numri i Fatures</label>
+                <div>{generatedNumber}</div>
+              </div>
+            )}  
           </div>
 
           <div className="add-sale-items">
             <table className="add-sale-table">
               <thead>
                 <tr>
-                  <th>Emri i Artikullit</th>
                   <th>Kodi i Artikullit</th>
+                  <th>Emri i Artikullit</th>
+                  <th>Kosto</th>
                   <th id="add-sale-price-type-header">Lloji i cmimit</th>
                   <th>Cmimi i njesise</th>
                   <th>Sasia</th>
@@ -412,25 +422,35 @@ export default function AddSale({ onClose, onBack }: AddSaleProps) {
                       <td>
                         <ArticleSearchInput
                           articles={articles}
-                          value={item.articleName}
-                          onChange={(value) => handleArticleNameChange(index, value)}
-                          onSelect={(article) => handleArticleSelectByName(index, article)}
-                          placeholder="Enter name"
-                          searchBy="name"
-                        />
-                      </td>
-                      <td>
-                        <ArticleSearchInput
-                          articles={articles}
                           value={item.articleCode}
                           onChange={(value) => handleArticleCodeChange(index, value)}
                           onSelect={(article) => handleArticleSelectByCode(index, article)}
-                          placeholder="Enter code"
+                          placeholder="Vendos kodin"
                           searchBy="code"
                         />
                         {errors[`item-${index}`] && (
                           <span className="error-text">{errors[`item-${index}`]}</span>
                         )}
+                      </td>
+                      <td>
+                        <ArticleSearchInput
+                          articles={articles}
+                          value={item.articleName}
+                          onChange={(value) => handleArticleNameChange(index, value)}
+                          onSelect={(article) => handleArticleSelectByName(index, article)}
+                          placeholder="Vendos emrin"
+                          searchBy="name"
+                        />
+                      </td>
+                      <td>
+                        <input
+                        type="number"
+                        step="0.01"
+                        value={article ? article.cost.toFixed(2) : ''}
+                        disabled={true}
+                        className="readonly-cost"
+                        placeholder="0.00"
+                      />
                       </td>
                       <td>
                         <select
@@ -441,14 +461,14 @@ export default function AddSale({ onClose, onBack }: AddSaleProps) {
                         >
                           {(() => {
                             if (!article) {
-                              return <option value="Price 1">Select article first</option>;
+                              return <option value="Price 1">Zgjedh artikullin fillimisht</option>;
                             }
                             return (
                               <>
                                 <option value="Price 1">{article.price1}</option>
                                 <option value="Price 2">{article.price2}</option>
                                 <option value="Price 3">{article.price3}</option>
-                                <option value="Custom">Custom</option>
+                                <option value="Custom">Percaktoje</option>
                               </>
                             );
                           })()}
@@ -479,7 +499,7 @@ export default function AddSale({ onClose, onBack }: AddSaleProps) {
                     </td>
                     <td>{item.total.toFixed(2)}</td>
                     <td>
-                      <button className="print-hide remove-btn" onClick={() => handleRemoveItem(index)}>Fshije</button>
+                      <button className="print-hide add-sale-remove-btn" onClick={() => handleRemoveItem(index)}>Fshije</button>
                     </td>
                   </tr>
                   );

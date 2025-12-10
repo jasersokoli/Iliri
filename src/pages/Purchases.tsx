@@ -31,7 +31,7 @@ export default function Purchases() {
           >
             <div className="purchases-card-icon">📋</div>
             <h3 className="purchases-card-title">Lista e Blerjeve</h3>
-            <p className="purchases-card-desc">Shiko te gjitha te dhenat e Blerjeve</p>
+            <p className="purchases-card-desc">Shiko te gjithe te dhenat e Blerjeve</p>
           </div>
           <div
             className="purchases-card"

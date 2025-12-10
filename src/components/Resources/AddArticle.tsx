@@ -187,7 +187,7 @@ export default function AddArticle({ articleId, onClose, onBack }: AddArticlePro
     }
   };
 
-  const units = ['pcs', 'kg', 'g', 'L', 'mL', 'm', 'cm', 'box', 'pack'];
+  const units = ['cope', 'kg', 'g', 'L', 'mL', 'm', 'cm', 'kuti', 'paketa'];
 
   return (
     <Modal isOpen={true} onClose={handleClose} size="large" title={existingArticle ? 'Article Details' : 'Shto Artikull te Ri'}>
@@ -222,7 +222,7 @@ export default function AddArticle({ articleId, onClose, onBack }: AddArticlePro
             }}
             disabled={mode === 'edit' && !existingArticle}
           >
-            {existingArticle ? 'Modify' : 'Add New'}
+            {existingArticle ? 'Modify' : 'Shto te Ri'}
           </button>
           <button
             className="add-article-btn"
@@ -250,18 +250,6 @@ export default function AddArticle({ articleId, onClose, onBack }: AddArticlePro
         <div className="add-article-form">
           <div className="add-article-row">
             <div className="add-article-field">
-              <label className="add-article-label">Emri i Artikullit *</label>
-              <input
-                type="text"
-                value={formData.name || ''}
-                onChange={(e) => handleChange('name', e.target.value)}
-                disabled={mode === 'view'}
-                className={`add-article-input ${errors.name ? 'error' : ''}`}
-              />
-              {errors.name && <span className="add-article-error">{errors.name}</span>}
-            </div>
-
-            <div className="add-article-field">
               <label className="add-article-label">Kodi i Artikullit *</label>
               <input
                 type="text"
@@ -271,6 +259,18 @@ export default function AddArticle({ articleId, onClose, onBack }: AddArticlePro
                 className={`add-article-input ${errors.code1 ? 'error' : ''}`}
               />
               {errors.code1 && <span className="add-article-error">{errors.code1}</span>}
+            </div>
+
+            <div className="add-article-field">
+              <label className="add-article-label">Emri i Artikullit *</label>
+              <input
+                type="text"
+                value={formData.name || ''}
+                onChange={(e) => handleChange('name', e.target.value)}
+                disabled={mode === 'view'}
+                className={`add-article-input ${errors.name ? 'error' : ''}`}
+              />
+              {errors.name && <span className="add-article-error">{errors.name}</span>}
             </div>
           </div>
 
@@ -310,7 +310,7 @@ export default function AddArticle({ articleId, onClose, onBack }: AddArticlePro
                 onChange={(e) => handleChange('minimumStock', e.target.value ? parseFloat(e.target.value) : undefined)}
                 disabled={mode === 'view'}
                 className={`add-article-input ${errors.minimumStock ? 'error' : ''}`}
-                placeholder="Optional"
+                placeholder="Opsional"
               />
               {errors.minimumStock && <span className="add-article-error">{errors.minimumStock}</span>}
             </div>

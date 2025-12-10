@@ -233,7 +233,7 @@ export default function ArticlesList({ onClose, onSelectArticle }: ArticlesListP
                             className="articles-inline-input"
                           />
                         ) : (
-                          `$${article.cost.toFixed(2)}`
+                          `${article.cost.toFixed(2)}`
                         )}
                       </td>
                       <td
@@ -261,7 +261,7 @@ export default function ArticlesList({ onClose, onSelectArticle }: ArticlesListP
                             className="articles-inline-input"
                           />
                         ) : (
-                          `$${article.price1.toFixed(2)}`
+                          `${article.price1.toFixed(2)}`
                         )}
                       </td>
                       <td
@@ -289,7 +289,7 @@ export default function ArticlesList({ onClose, onSelectArticle }: ArticlesListP
                             className="articles-inline-input"
                           />
                         ) : (
-                          article.price2 ? `$${article.price2.toFixed(2)}` : '-'
+                          article.price2 ? `${article.price2.toFixed(2)}` : '-'
                         )}
                       </td>
                       <td
@@ -317,7 +317,7 @@ export default function ArticlesList({ onClose, onSelectArticle }: ArticlesListP
                             className="articles-inline-input"
                           />
                         ) : (
-                          article.price3 ? `$${article.price3.toFixed(2)}` : '-'
+                          article.price3 ? `${article.price3.toFixed(2)}` : '-'
                         )}
                       </td>
                     </tr>

@@ -44,7 +44,7 @@ export default function SuppliersList({ onClose, onSelectSupplier }: SuppliersLi
     return filtered;
   }, [suppliers, search, showActive, selectedSupplierName]);
 
-  const supplierNames = ['All', ...Array.from(new Set(suppliers.map((s) => s.name)))];
+  const supplierNames = ['Te gjithe', ...Array.from(new Set(suppliers.map((s) => s.name)))];
 
   return (
     <>
@@ -73,7 +73,7 @@ export default function SuppliersList({ onClose, onSelectSupplier }: SuppliersLi
             <input
               type="text"
               className="suppliers-search"
-              placeholder="Search by name, code, or telephone..."
+              placeholder="Kerko permes emrit, kodit ose telefonit..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
             />

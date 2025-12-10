@@ -62,7 +62,6 @@
 .sales-table th,
 .sales-table td {
   white-space: nowrap;
-  min-width: 80px;
 }
 
 .sales-table th {

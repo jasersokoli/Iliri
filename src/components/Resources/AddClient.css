@@ -82,3 +82,8 @@
   cursor: pointer;
 }
 
+.add-client-field label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}

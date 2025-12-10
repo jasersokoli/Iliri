@@ -70,28 +70,28 @@ export default function Dashboard() {
         <div className="dashboard-card">
           <h3 className="dashboard-card-title">Te Ardhurat Totale</h3>
           <div className="dashboard-metric">
-            ${analytics?.totalRevenue.toFixed(2) || '0.00'}
+            {analytics?.totalRevenue.toFixed(2) || '0.00'}
           </div>
         </div>
 
         <div className="dashboard-card">
           <h3 className="dashboard-card-title">Fitimi Total</h3>
           <div className="dashboard-metric">
-            ${analytics?.totalProfit.toFixed(2) || '0.00'}
+            {analytics?.totalProfit.toFixed(2) || '0.00'}
           </div>
         </div>
 
         <div className="dashboard-card">
           <h3 className="dashboard-card-title">Borxhet Total</h3>
           <div className="dashboard-metric dashboard-metric-danger">
-            ${analytics?.totalDebt.toFixed(2) || '0.00'}
+            {analytics?.totalDebt.toFixed(2) || '0.00'}
           </div>
         </div>
 
         <div className="dashboard-card">
           <h3 className="dashboard-card-title">Vlera e Inventarit</h3>
           <div className="dashboard-metric">
-            ${analytics?.inventoryValue.toFixed(2) || '0.00'}
+            {analytics?.inventoryValue.toFixed(2) || '0.00'}
           </div>
         </div>
 
@@ -126,7 +126,7 @@ export default function Dashboard() {
           </div>
           <div className="dashboard-notifications-list">
             {notifications.length === 0 ? (
-              <div className="dashboard-empty">No notifications</div>
+              <div className="dashboard-empty">Nuk ka lajmerime</div>
             ) : (
               notifications.map((notification) => (
                 <div

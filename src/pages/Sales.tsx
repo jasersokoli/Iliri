@@ -31,7 +31,7 @@ export default function Sales() {
           >
             <div className="sales-card-icon">📋</div>
             <h3 className="sales-card-title">Lista e Shitjeve</h3>
-            <p className="sales-card-desc">Shiko te gjitha te dhenat e Shitjeve</p>
+            <p className="sales-card-desc">Shiko te gjithe te dhenat e Shitjeve</p>
           </div>
           <div
             className="sales-card"

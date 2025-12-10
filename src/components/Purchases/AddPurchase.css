@@ -140,3 +140,17 @@
   background-color: #f1f5ff;
 }
 
+/* Blue remove button (same style as action buttons) */
+.add-purchase-remove-btn {
+  padding: 8px 16px;
+  background: var(--primary-color);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.add-purchase-remove-btn:hover {
+  background: var(--primary-color-dark, #003fbb);
+}

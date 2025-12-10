@@ -231,8 +231,8 @@ export default function AddPurchase({ onClose, onBack }: AddPurchaseProps) {
             <table className="add-purchase-table">
               <thead>
                 <tr>
-                  <th>Emri i Artikullit</th>
                   <th>Kodi i Artikullit</th>
+                  <th>Emri i Artikullit</th>
                   <th>Kostoja per njesi</th>
                   <th>Sasia</th>
                   <th>Totali</th>
@@ -245,25 +245,25 @@ export default function AddPurchase({ onClose, onBack }: AddPurchaseProps) {
                     <td>
                       <ArticleSearchInput
                         articles={articles}
-                        value={item.articleName}
-                        onChange={(value) => handleArticleNameChange(index, value)}
-                        onSelect={(article) => handleArticleSelectByName(index, article)}
-                        placeholder="Enter name"
-                        searchBy="name"
-                      />
-                    </td>
-                    <td>
-                      <ArticleSearchInput
-                        articles={articles}
                         value={item.articleCode}
                         onChange={(value) => handleArticleCodeChange(index, value)}
                         onSelect={(article) => handleArticleSelectByCode(index, article)}
-                        placeholder="Enter code"
+                        placeholder="Vendos kodin"
                         searchBy="code"
                       />
                       {errors[`item-${index}`] && (
                         <span className="error-text">{errors[`item-${index}`]}</span>
                       )}
+                    </td>
+                    <td>
+                      <ArticleSearchInput
+                        articles={articles}
+                        value={item.articleName}
+                        onChange={(value) => handleArticleNameChange(index, value)}
+                        onSelect={(article) => handleArticleSelectByName(index, article)}
+                        placeholder="Vendos emrin"
+                        searchBy="name"
+                      />
                     </td>
                     <td>
                       <input
@@ -289,7 +289,7 @@ export default function AddPurchase({ onClose, onBack }: AddPurchaseProps) {
                     </td>
                     <td>{item.total.toFixed(2)}</td>
                     <td>
-                      <button onClick={() => handleRemoveItem(index)}>Fshije</button>
+                      <button className="add-purchase-remove-btn" onClick={() => handleRemoveItem(index)}>Fshije</button>
                     </td>
                   </tr>
                 ))}

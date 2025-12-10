@@ -113,6 +113,7 @@
 
 .add-sale-payment label {
   display: flex;
+  margin-left: 3px;
   align-items: center;
   gap: 8px;
   cursor: pointer;
@@ -154,4 +155,43 @@
   background-color: #f1f5ff;
 }
 
+.add-sale-remove-btn {
+  padding: 8px 16px;
+  background: var(--primary-color);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+}
 
+.add-sale-remove-btn:hover {
+  background: var(--primary-color-dark, var(--primary-color));
+}
+
+.add-sale-paid-amount input {
+  width: 120px;       /* same size as other inputs */
+  max-width: 120px;
+  padding: 6px;
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  background: white;
+}
+
+.add-sale-paid-amount {
+  display: flex;
+  flex-direction: column;
+  gap: 6px; /* space between label and input */
+}
+
+.add-sale-remaining {
+  margin-left: 3px !important; /* space between input and 'Mbetur' */
+  display: inline-block;
+}
+
+@media print {
+  th:nth-child(3),    /* Kosto header */
+  td:nth-child(3) {   /* Kosto cells */
+    display: none !important;
+  }
+}

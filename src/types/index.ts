@@ -84,6 +84,7 @@ export interface SaleItem {
   unitPrice: number;
   quantity: number;
   total: number;
+  cost: number;
 }
 
 export interface Notification {

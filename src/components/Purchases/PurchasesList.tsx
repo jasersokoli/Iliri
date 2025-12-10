@@ -42,7 +42,7 @@ export default function PurchasesList({ onClose }: PurchasesListProps) {
     return filtered;
   }, [purchases, search, selectedSupplier, showOnlyMine]);
 
-  const supplierOptions = ['All', ...suppliers.filter((s) => s.active).map((s) => s.name)];
+  const supplierOptions = ['Te gjithe', ...suppliers.filter((s) => s.active).map((s) => s.name)];
 
   return (
     <>
@@ -121,7 +121,7 @@ export default function PurchasesList({ onClose }: PurchasesListProps) {
                       <td>{purchase.username}</td>
                       <td>{format(purchase.date, 'dd/MM/yyyy')}</td>
                       <td>{format(purchase.date, 'HH:mm:ss')}</td>
-                      <td>${purchase.total.toFixed(2)}</td>
+                      <td>{purchase.total.toFixed(2)}</td>
                     </tr>
                   ))
                 )}

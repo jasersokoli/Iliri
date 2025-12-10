@@ -18,20 +18,20 @@ export default function PurchaseDetails({ purchaseId, onClose }: PurchaseDetails
   }
 
   return (
-    <Modal isOpen={true} onClose={onClose} size="medium" title="Purchase Details">
+    <Modal isOpen={true} onClose={onClose} size="medium" title="Detajet e blerjes">
       <div className="purchase-details">
         <div className="purchase-details-header">
           <button
               className="purchase-details-print-btn"
               onClick={() => window.print()}
           >
-              🖨️ Print
+              🖨️ Printo
           </button>
           <div className="purchase-details-info">
-            <div><strong>Supplier:</strong> {purchase.supplierName}</div>
-            <div><strong>Date:</strong> {format(purchase.date, 'dd/MM/yyyy')}</div>
-            <div><strong>Created by:</strong> {purchase.username}</div>
-            <div><strong>Total:</strong> {purchase.total.toFixed(2)}</div>
+            <div><strong>Furnitori:</strong> {purchase.supplierName}</div>
+            <div><strong>Data:</strong> {format(purchase.date, 'dd/MM/yyyy')}</div>
+            <div><strong>Krijuar nga:</strong> {purchase.username}</div>
+            <div><strong>Totali:</strong> {purchase.total.toFixed(2)}</div>
           </div>
         </div>
 
@@ -39,11 +39,11 @@ export default function PurchaseDetails({ purchaseId, onClose }: PurchaseDetails
           <table className="purchase-details-table">
             <thead>
               <tr>
-                <th>Article Code</th>
-                <th>Article Name</th>
-                <th>Unit Cost</th>
-                <th>Quantity</th>
-                <th>Total</th>
+                <th>Kodi Artikullit</th>
+                <th>Emri i Artikullit</th>
+                <th>Kostoja e njesis</th>
+                <th>Sasia</th>
+                <th>Totali</th>
               </tr>
             </thead>
             <tbody>

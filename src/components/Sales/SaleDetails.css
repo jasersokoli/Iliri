@@ -149,3 +149,14 @@
   border-bottom: 1px solid var(--border-color);
 }
 
+@media print {
+  .hide-on-print {
+    display: none !important;
+  }
+
+  .sale-details-table th.hide-on-print,
+  .sale-details-table td.hide-on-print {
+    width: 0 !important;
+    padding: 0 !important;
+  }
+}
