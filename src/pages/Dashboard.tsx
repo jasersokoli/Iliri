@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useDataStore } from '../store/dataStore';
-import { LineChart, Line, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
-import Modal from '../components/Modal';
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import './Dashboard.css';
 import React from 'react';
 
@@ -17,7 +16,6 @@ export default function Dashboard() {
   } = useDataStore();
 
   const [notes, setNotes] = useState<string>('');
-  const [showNotifications, setShowNotifications] = useState(true);
 
   useEffect(() => {
     refreshAnalytics();
