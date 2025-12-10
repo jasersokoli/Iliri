@@ -49,7 +49,9 @@ export default function Modal({
       >
         {title && (
           <>
-          <h2 className="modal-title modal-title-large print-only">Iliri - Inventory Management</h2>
+          <h2 className="modal-title modal-title-large print-only">MATERIALE ELEKTRIKE ILIRI</h2>
+          <h3 className="print-only-small">RRUGA BUJAR BISHANAKU, PRANE STADIUMIT</h3>
+          <h3 className="print-only-small">CEL 355 69 20 74 808</h3>
 
           <div className="modal-header">
             <h2 className="modal-title">{title}</h2>
