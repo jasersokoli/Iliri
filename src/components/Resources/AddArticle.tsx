@@ -13,7 +13,7 @@ interface AddArticleProps {
 
 type Mode = 'view' | 'edit';
 
-export default function AddArticle({ articleId, onClose, onBack }: AddArticleProps) {
+export default function AddArticle({ articleId, onClose }: AddArticleProps) {
   const { articles, suppliers, addArticle, updateArticle, deleteArticle, addNotification, refreshAnalytics } = useDataStore();
   const [mode, setMode] = useState<Mode>('edit');
   const [errors, setErrors] = useState<Record<string, string>>({});
@@ -80,15 +80,15 @@ export default function AddArticle({ articleId, onClose, onBack }: AddArticlePro
       newErrors.name = 'Name is required';
     }
 
-    if (formData.cost < 0) {
+    if (formData.cost !== undefined && formData.cost < 0) {
       newErrors.cost = 'Cost must be non-negative';
     }
 
-    if (formData.currentStock < 0) {
+    if (formData.currentStock !== undefined && formData.currentStock < 0) {
       newErrors.currentStock = 'Current stock must be non-negative';
     }
 
-    if (formData.price1 < 0) {
+    if (formData.price1 !== undefined && formData.price1 < 0) {
       newErrors.price1 = 'Price 1 must be non-negative';
     }
 

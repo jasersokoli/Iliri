@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import Modal from '../components/Modal';
 import ArticlesList from '../components/Resources/ArticlesList';
 import AddArticle from '../components/Resources/AddArticle';
 import SuppliersList from '../components/Resources/SuppliersList';

@@ -11,7 +11,7 @@ interface SalesListProps {
 }
 
 export default function SalesList({ onClose }: SalesListProps) {
-  const { sales, clients, updateSale, refreshAnalytics, deleteSale, getPaymentsBySaleId } = useDataStore();
+  const { sales, clients, refreshAnalytics, deleteSale, getPaymentsBySaleId } = useDataStore();
   const [search, setSearch] = useState('');
   const [selectedClient, setSelectedClient] = useState<string>('All');
   const [showOnlyMine, setShowOnlyMine] = useState(false);
@@ -48,11 +48,6 @@ export default function SalesList({ onClose }: SalesListProps) {
 
     return filtered;
   }, [sales, search, selectedClient, showOnlyMine]);
-
-  const handleTogglePaid = async (saleId: string, paid: boolean) => {
-    updateSale(saleId, { paid });
-    refreshAnalytics();
-  };
 
   const clientOptions = ['Te gjithe', ...clients.filter((c) => c.active).map((c) => c.name)];
 

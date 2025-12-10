@@ -1,4 +1,4 @@
-import { NavLink, useLocation } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import './Sidebar.css';
 import React from 'react';
 
@@ -10,7 +10,6 @@ const menuItems = [
 ];
 
 export default function Sidebar() {
-  const location = useLocation();
 
   return (
     <aside className="sidebar">

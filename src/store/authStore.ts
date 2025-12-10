@@ -42,7 +42,7 @@ const initialState = loadAuthFromStorage();
 export const useAuthStore = create<AuthState>((set) => ({
   user: initialState.user,
   token: initialState.token,
-  login: async (name: string, password: string, rememberMe = false) => {
+  login: async (name: string, _password: string, rememberMe = false) => {
     // TODO: Replace with actual API call
     // Mock successful login
     const mockUser = {

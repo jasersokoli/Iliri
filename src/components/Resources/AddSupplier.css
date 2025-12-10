@@ -84,5 +84,5 @@
 .add-supplier-field label {
   display: flex;
   align-items: center;
-  gap: 8px; /* space between checkbox and text */
+  gap: 8px;
 }
